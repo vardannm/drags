@@ -27,6 +27,7 @@ const layoutSchema = new mongoose.Schema(
   {
     user: { type: mongoose.Schema.Types.ObjectId, ref: 'User', required: true, index: true },
     name: { type: String, required: true, trim: true, maxlength: 120 },
+    desktopKey: { type: String, default: 'operations', index: true },
     mode: { type: String, enum: ['free', 'grid'], default: 'free' },
     windows: { type: [windowStateSchema], default: [] },
     order: { type: [String], default: [] },

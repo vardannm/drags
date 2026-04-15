@@ -1,15 +1,7 @@
 import React from 'react';
 import Window from './Window';
-import { CargoWindow, DriverWindow, ScalingWindow, TaxWindow } from '../windows';
 
-const windowContentMap = {
-  scaling: <ScalingWindow />,
-  driver: <DriverWindow />,
-  cargo: <CargoWindow />,
-  tax: <TaxWindow />,
-};
-
-function Desktop({ manager }) {
+function Desktop({ manager, contentMap }) {
   const {
     mode,
     desktopRef,
@@ -44,7 +36,7 @@ function Desktop({ manager }) {
               windowRefs.current[windowState.id] = node;
             }}
           >
-            {windowContentMap[windowState.id]}
+            {contentMap[windowState.id] || <div>Missing window content.</div>}
           </Window>
         ))}
 
@@ -65,7 +57,7 @@ function Desktop({ manager }) {
                 windowRefs.current[windowState.id] = node;
               }}
             >
-              {windowContentMap[windowState.id]}
+              {contentMap[windowState.id] || <div>Missing window content.</div>}
             </Window>
           ))}
           {dragGhost && <div className="drag-ghost" style={dragGhost} />}

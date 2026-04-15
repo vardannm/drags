@@ -15,6 +15,7 @@ const router = express.Router();
 
 const layoutBodyValidation = [
   body('name').isString().trim().isLength({ min: 1, max: 120 }),
+  body('desktopKey').optional().isString(),
   body('mode').isIn(['free', 'grid']),
   body('windows').isArray(),
   body('order').optional().isArray(),

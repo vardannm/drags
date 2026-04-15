@@ -60,6 +60,48 @@ export const createInitialWindows = () => [
   },
 ];
 
+export const createDocumentsWindows = () => [
+  {
+    id: 'imports',
+    title: 'Imported PDFs',
+    x: 32,
+    y: 40,
+    width: 520,
+    height: 320,
+    z: 1,
+    minimized: false,
+    closed: false,
+    gridColSpan: 3,
+    gridRowSpan: 2,
+  },
+  {
+    id: 'inspection',
+    title: 'Inspection Queue',
+    x: 580,
+    y: 48,
+    width: 420,
+    height: 300,
+    z: 2,
+    minimized: false,
+    closed: false,
+    gridColSpan: 2,
+    gridRowSpan: 2,
+  },
+  {
+    id: 'payments',
+    title: 'Payment Ledger',
+    x: 220,
+    y: 380,
+    width: 560,
+    height: 280,
+    z: 3,
+    minimized: false,
+    closed: false,
+    gridColSpan: 3,
+    gridRowSpan: 2,
+  },
+];
+
 export const handlesByType = {
   n: ['n'],
   s: ['s'],
