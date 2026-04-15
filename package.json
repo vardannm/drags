@@ -1,32 +1,27 @@
 {
-  "name": "border-customs-dashboard",
-  "version": "1.0.0",
-  "description": "Border Customs Dashboard frontend + backend",
-  "main": "server.js",
-  "type": "commonjs",
+  "name": "drags",
+  "private": true,
+  "version": "0.0.0",
+  "type": "module",
   "scripts": {
     "dev": "vite",
-    "dev:server": "nodemon server.js",
     "build": "vite build",
-    "preview": "vite preview",
-    "start": "node server.js",
-    "check:server": "node --check server.js"
+    "lint": "eslint .",
+    "preview": "vite preview"
   },
   "dependencies": {
-    "bcryptjs": "^2.4.3",
-    "cors": "^2.8.5",
-    "dotenv": "^16.4.5",
-    "express": "^4.19.2",
-    "express-async-errors": "^3.1.1",
-    "express-validator": "^7.1.0",
-    "jsonwebtoken": "^9.0.2",
-    "mongoose": "^8.5.1",
-    "react": "^18.3.1",
-    "react-dom": "^18.3.1"
+    "react": "^19.2.4",
+    "react-dom": "^19.2.4"
   },
   "devDependencies": {
-    "@vitejs/plugin-react": "^4.3.1",
-    "nodemon": "^3.1.4",
-    "vite": "^5.4.1"
+    "@eslint/js": "^9.39.4",
+    "@types/react": "^19.2.14",
+    "@types/react-dom": "^19.2.3",
+    "@vitejs/plugin-react": "^6.0.1",
+    "eslint": "^9.39.4",
+    "eslint-plugin-react-hooks": "^7.0.1",
+    "eslint-plugin-react-refresh": "^0.5.2",
+    "globals": "^17.4.0",
+    "vite": "^8.0.4"
   }
 }
