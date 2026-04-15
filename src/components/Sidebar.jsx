@@ -1,7 +1,7 @@
 import React, { useMemo } from 'react';
 import { useCustomsData } from '../context/CustomsDataContext';
 
-function Sidebar({ manager }) {
+function Sidebar({ manager, theme, setTheme, customTheme, setCustomTheme }) {
   const { driverData, cargoTotals, netWeight, taxes } = useCustomsData();
 
   const mergedFavorites = useMemo(() => {
@@ -27,6 +27,87 @@ function Sidebar({ manager }) {
             [{favorite.source}] {favorite.name}
           </button>
         ))}
+      </div>
+
+      <h3>Theme</h3>
+      <div className="panel theme-panel">
+        <div className="inline-grid">
+          <button className={theme === 'default' ? 'active' : ''} onClick={() => setTheme('default')}>
+            Default
+          </button>
+          <button className={theme === 'sunrise' ? 'active' : ''} onClick={() => setTheme('sunrise')}>
+            Bright Sunrise
+          </button>
+          <button className={theme === 'mint' ? 'active' : ''} onClick={() => setTheme('mint')}>
+            Bright Mint
+          </button>
+          <button className={theme === 'lavender' ? 'active' : ''} onClick={() => setTheme('lavender')}>
+            Bright Lavender
+          </button>
+        </div>
+
+        <button className={theme === 'custom' ? 'active' : ''} onClick={() => setTheme('custom')}>
+          Use Custom Theme
+        </button>
+
+        <label>
+          Background Start
+          <input
+            type="color"
+            value={customTheme.bgStart}
+            onChange={(event) =>
+              setCustomTheme((prev) => ({ ...prev, bgStart: event.target.value }))
+            }
+          />
+        </label>
+        <label>
+          Background Mid
+          <input
+            type="color"
+            value={customTheme.bgMid}
+            onChange={(event) =>
+              setCustomTheme((prev) => ({ ...prev, bgMid: event.target.value }))
+            }
+          />
+        </label>
+        <label>
+          Background End
+          <input
+            type="color"
+            value={customTheme.bgEnd}
+            onChange={(event) =>
+              setCustomTheme((prev) => ({ ...prev, bgEnd: event.target.value }))
+            }
+          />
+        </label>
+        <label>
+          Panel Color
+          <input
+            type="color"
+            value={customTheme.panel}
+            onChange={(event) =>
+              setCustomTheme((prev) => ({ ...prev, panel: event.target.value }))
+            }
+          />
+        </label>
+        <label>
+          Text Color
+          <input
+            type="color"
+            value={customTheme.text}
+            onChange={(event) => setCustomTheme((prev) => ({ ...prev, text: event.target.value }))}
+          />
+        </label>
+        <label>
+          Accent Color
+          <input
+            type="color"
+            value={customTheme.accent}
+            onChange={(event) =>
+              setCustomTheme((prev) => ({ ...prev, accent: event.target.value }))
+            }
+          />
+        </label>
       </div>
     </aside>
   );

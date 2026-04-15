@@ -1,15 +1,28 @@
 import React from 'react';
 import Window from './Window';
 import { CargoWindow, DriverWindow, ScalingWindow, TaxWindow } from '../windows';
+import {
+  DriversTableWindow,
+  InspectionsTableWindow,
+  PaymentsTableWindow,
+  ShipmentsTableWindow,
+} from '../windows/TableWindows';
 
-const windowContentMap = {
+const desktopOneContentMap = {
   scaling: <ScalingWindow />,
   driver: <DriverWindow />,
   cargo: <CargoWindow />,
   tax: <TaxWindow />,
 };
 
-function Desktop({ manager }) {
+const desktopTwoContentMap = {
+  scaling: <ShipmentsTableWindow />,
+  driver: <DriversTableWindow />,
+  cargo: <InspectionsTableWindow />,
+  tax: <PaymentsTableWindow />,
+};
+
+function Desktop({ manager, activeDesktop }) {
   const {
     mode,
     desktopRef,
@@ -25,6 +38,7 @@ function Desktop({ manager }) {
     minimizeWindow,
     closeWindow,
   } = manager;
+  const contentMap = activeDesktop === 'desktop-2' ? desktopTwoContentMap : desktopOneContentMap;
 
   return (
     <section className="desktop-area" ref={desktopRef}>
@@ -44,7 +58,7 @@ function Desktop({ manager }) {
               windowRefs.current[windowState.id] = node;
             }}
           >
-            {windowContentMap[windowState.id]}
+            {contentMap[windowState.id]}
           </Window>
         ))}
 
@@ -65,7 +79,7 @@ function Desktop({ manager }) {
                 windowRefs.current[windowState.id] = node;
               }}
             >
-              {windowContentMap[windowState.id]}
+              {contentMap[windowState.id]}
             </Window>
           ))}
           {dragGhost && <div className="drag-ghost" style={dragGhost} />}
