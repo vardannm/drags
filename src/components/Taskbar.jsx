@@ -1,7 +1,7 @@
 import React from 'react';
 import FavoriteManager from './FavoriteManager';
 
-function Taskbar({ manager, activeDesktop, onDesktopChange }) {
+function Taskbar({ manager, activeDesktop, onDesktopChange, token }) {
   const { mode, setMode, windows, restoreWindow } = manager;
 
   return (
@@ -41,7 +41,7 @@ function Taskbar({ manager, activeDesktop, onDesktopChange }) {
         ))}
       </div>
 
-      <FavoriteManager manager={manager} />
+      <FavoriteManager manager={manager} token={token} />
     </footer>
   );
 }

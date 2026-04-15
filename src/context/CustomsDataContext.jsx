@@ -1,6 +1,5 @@
-import React, { createContext, useContext, useMemo, useState } from 'react';
-
-const CustomsDataContext = createContext(null);
+import React, { useMemo, useState } from 'react';
+import { CustomsDataContext } from './customsDataContext';
 
 const initialDriver = {
   fullName: '',
@@ -131,12 +130,4 @@ export function CustomsDataProvider({ children }) {
   };
 
   return <CustomsDataContext.Provider value={value}>{children}</CustomsDataContext.Provider>;
-}
-
-export function useCustomsData() {
-  const context = useContext(CustomsDataContext);
-  if (!context) {
-    throw new Error('useCustomsData must be used within CustomsDataProvider');
-  }
-  return context;
 }

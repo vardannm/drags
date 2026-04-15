@@ -1,5 +1,5 @@
 import React from 'react';
-import { useCustomsData } from '../context/CustomsDataContext';
+import { useCustomsData } from '../context/useCustomsData';
 
 function CargoWindow() {
   const { cargoItems, setCargoItems, createCargoItem, cargoTotals } = useCustomsData();

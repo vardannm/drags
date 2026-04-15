@@ -1,13 +1,24 @@
 import React, { useState } from 'react';
 
-function FavoriteManager({ manager }) {
+function FavoriteManager({ manager, token }) {
   const [name, setName] = useState('');
   const [status, setStatus] = useState('');
 
-  const save = () => {
+  const save = async () => {
     const finalName = name.trim() || `Layout ${Date.now()}`;
     manager.saveLocalFavorite(finalName);
-    setStatus('Saved locally');
+    if (!token) {
+      setStatus('Saved locally');
+      setName('');
+      return;
+    }
+
+    try {
+      await manager.saveBackendFavorite(finalName);
+      setStatus('Saved locally + backend');
+    } catch {
+      setStatus('Saved locally (backend failed)');
+    }
 
     setName('');
   };
