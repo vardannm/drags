@@ -12,14 +12,13 @@ const MIN_W = 250;
 const MIN_H = 160;
 const GRID_COLUMNS = 6;
 
-export function useWindowManager(customsSnapshot, restoreCustomsSnapshot, token) {
+export function useWindowManager(customsSnapshot, restoreCustomsSnapshot) {
   const [mode, setMode] = useState('free');
   const [windows, setWindows] = useState(createInitialWindows());
   const [order, setOrder] = useState(createInitialWindows().map((w) => w.id));
   const [zCounter, setZCounter] = useState(20);
   const [interaction, setInteraction] = useState(null);
   const [dragGhost, setDragGhost] = useState(null);
-  const [backendFavorites, setBackendFavorites] = useState([]);
   const [localFavorites, setLocalFavorites] = useState(() => {
     try {
       return JSON.parse(localStorage.getItem(STORAGE_KEYS.localFavorites) || '[]');
@@ -262,35 +261,6 @@ export function useWindowManager(customsSnapshot, restoreCustomsSnapshot, token)
     return payload;
   };
 
-  const fetchBackendFavorites = useCallback(async () => {
-    if (!token) return;
-    const response = await fetch('/api/layouts', {
-      headers: { Authorization: `Bearer ${token}` },
-    });
-    if (!response.ok) return;
-    const data = await response.json();
-    setBackendFavorites(data);
-  }, [token]);
-
-  const saveBackendFavorite = useCallback(
-    async (name) => {
-      if (!token) return null;
-      const response = await fetch('/api/layouts/save', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          Authorization: `Bearer ${token}`,
-        },
-        body: JSON.stringify(toPayload(name)),
-      });
-      if (!response.ok) throw new Error('Could not save backend layout');
-      const data = await response.json();
-      setBackendFavorites((prev) => [data, ...prev]);
-      return data;
-    },
-    [token, mode, order, windows, customsSnapshot]
-  );
-
   const sortedFreeWindows = [...visibleWindows].sort((a, b) => a.z - b.z);
   const orderedGridWindows = order
     .map((id) => windows.find((w) => w.id === id))
@@ -316,10 +286,7 @@ export function useWindowManager(customsSnapshot, restoreCustomsSnapshot, token)
     minimizeWindow,
     closeWindow,
     localFavorites,
-    backendFavorites,
     saveLocalFavorite,
-    saveBackendFavorite,
-    fetchBackendFavorites,
     applyPayload,
     gridColumns: GRID_COLUMNS,
   };

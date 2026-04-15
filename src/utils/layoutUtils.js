@@ -1,7 +1,6 @@
 export const clamp = (value, min, max) => Math.max(min, Math.min(value, max));
 
 export const STORAGE_KEYS = {
-  token: 'customs-auth-token',
   localFavorites: 'customs-local-layout-favorites',
 };
 
