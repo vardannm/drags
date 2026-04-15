@@ -2,7 +2,7 @@ import React, { useMemo, useState } from 'react';
 import { useCustomsData } from '../context/CustomsDataContext';
 import { STORAGE_KEYS } from '../utils/layoutUtils';
 
-function Sidebar({ manager, token, onTokenChange }) {
+function Sidebar({ manager, token, onTokenChange, activeDesktop, docsData }) {
   const { driverData, cargoTotals, netWeight, taxes } = useCustomsData();
   const [authForm, setAuthForm] = useState({ mode: 'login', name: '', email: '', password: '' });
   const [authMessage, setAuthMessage] = useState('');
@@ -47,12 +47,23 @@ function Sidebar({ manager, token, onTokenChange }) {
 
   return (
     <aside className="sidebar">
-      <h3>Customs Summary</h3>
+      <h3>{activeDesktop === 'operations' ? 'Operations Summary' : 'Documents Summary'}</h3>
       <div className="panel">
-        <div>Driver: {driverData.fullName || '—'}</div>
-        <div>Net Weight: {netWeight.toLocaleString()} kg</div>
-        <div>Cargo Value: ${cargoTotals.totalValue.toLocaleString()}</div>
-        <div>Total Tax: ${taxes.total.toFixed(2)}</div>
+        {activeDesktop === 'operations' ? (
+          <>
+            <div>Driver: {driverData.fullName || '—'}</div>
+            <div>Net Weight: {netWeight.toLocaleString()} kg</div>
+            <div>Cargo Value: ${cargoTotals.totalValue.toLocaleString()}</div>
+            <div>Total Tax: ${taxes.total.toFixed(2)}</div>
+          </>
+        ) : (
+          <>
+            <div>Imported PDFs: {docsData.imports.length}</div>
+            <div>Inspections: {docsData.inspections.length}</div>
+            <div>Pending Inspections: {docsData.inspections.filter((x) => x.status !== 'Passed').length}</div>
+            <div>Ledger Entries: {docsData.payments.length}</div>
+          </>
+        )}
       </div>
 
       <h3>Auth</h3>

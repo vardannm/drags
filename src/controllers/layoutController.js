@@ -3,6 +3,7 @@ const Layout = require('../models/Layout');
 function normalizeLayoutBody(body) {
   return {
     name: body.name,
+    desktopKey: body.desktopKey || 'operations',
     mode: body.mode,
     windows: Array.isArray(body.windows) ? body.windows : [],
     order: Array.isArray(body.order) ? body.order : [],

@@ -12,17 +12,25 @@ const MIN_W = 250;
 const MIN_H = 160;
 const GRID_COLUMNS = 6;
 
-export function useWindowManager(customsSnapshot, restoreCustomsSnapshot, token) {
+export function useWindowManager({
+  customsSnapshot,
+  restoreCustomsSnapshot,
+  token,
+  desktopKey = 'primary',
+  initialWindows = createInitialWindows,
+}) {
+  const localStorageKey = `${STORAGE_KEYS.localFavorites}-${desktopKey}`;
+
   const [mode, setMode] = useState('free');
-  const [windows, setWindows] = useState(createInitialWindows());
-  const [order, setOrder] = useState(createInitialWindows().map((w) => w.id));
+  const [windows, setWindows] = useState(initialWindows());
+  const [order, setOrder] = useState(initialWindows().map((w) => w.id));
   const [zCounter, setZCounter] = useState(20);
   const [interaction, setInteraction] = useState(null);
   const [dragGhost, setDragGhost] = useState(null);
   const [backendFavorites, setBackendFavorites] = useState([]);
   const [localFavorites, setLocalFavorites] = useState(() => {
     try {
-      return JSON.parse(localStorage.getItem(STORAGE_KEYS.localFavorites) || '[]');
+      return JSON.parse(localStorage.getItem(localStorageKey) || '[]');
     } catch {
       return [];
     }
@@ -146,7 +154,13 @@ export function useWindowManager(customsSnapshot, restoreCustomsSnapshot, token)
           const target = visibleWindows.find((item) => {
             if (item.id === interaction.id) return false;
             const rect = windowRefs.current[item.id]?.getBoundingClientRect();
-            return rect && pointerX >= rect.left && pointerX <= rect.right && pointerY >= rect.top && pointerY <= rect.bottom;
+            return (
+              rect &&
+              pointerX >= rect.left &&
+              pointerX <= rect.right &&
+              pointerY >= rect.top &&
+              pointerY <= rect.bottom
+            );
           });
 
           if (target?.id && target.id !== interaction.lastSwapTarget) {
@@ -181,11 +195,19 @@ export function useWindowManager(customsSnapshot, restoreCustomsSnapshot, token)
             }
             if (handles.includes('w')) {
               width = clamp(interaction.startWidth - dx, MIN_W, interaction.startLeft + interaction.startWidth);
-              x = clamp(interaction.startLeft + dx, 0, interaction.startLeft + interaction.startWidth - MIN_W);
+              x = clamp(
+                interaction.startLeft + dx,
+                0,
+                interaction.startLeft + interaction.startWidth - MIN_W
+              );
             }
             if (handles.includes('n')) {
               height = clamp(interaction.startHeight - dy, MIN_H, interaction.startTop + interaction.startHeight);
-              y = clamp(interaction.startTop + dy, 0, interaction.startTop + interaction.startHeight - MIN_H);
+              y = clamp(
+                interaction.startTop + dy,
+                0,
+                interaction.startTop + interaction.startHeight - MIN_H
+              );
             }
 
             if (interaction.mode === 'grid') {
@@ -227,6 +249,7 @@ export function useWindowManager(customsSnapshot, restoreCustomsSnapshot, token)
 
   const toPayload = (name) => ({
     name,
+    desktopKey,
     mode,
     order,
     windows: windows.map(({ id, x, y, width, height, z, minimized }) => ({
@@ -258,7 +281,7 @@ export function useWindowManager(customsSnapshot, restoreCustomsSnapshot, token)
     const payload = { id: crypto.randomUUID(), ...toPayload(name) };
     const next = [payload, ...localFavorites].slice(0, 10);
     setLocalFavorites(next);
-    localStorage.setItem(STORAGE_KEYS.localFavorites, JSON.stringify(next));
+    localStorage.setItem(localStorageKey, JSON.stringify(next));
     return payload;
   };
 
@@ -269,8 +292,9 @@ export function useWindowManager(customsSnapshot, restoreCustomsSnapshot, token)
     });
     if (!response.ok) return;
     const data = await response.json();
-    setBackendFavorites(data);
-  }, [token]);
+    const filtered = data.filter((item) => (item.desktopKey || item.dashboardData?.desktopKey || 'primary') === desktopKey);
+    setBackendFavorites(filtered);
+  }, [token, desktopKey]);
 
   const saveBackendFavorite = useCallback(
     async (name) => {
@@ -288,7 +312,7 @@ export function useWindowManager(customsSnapshot, restoreCustomsSnapshot, token)
       setBackendFavorites((prev) => [data, ...prev]);
       return data;
     },
-    [token, mode, order, windows, customsSnapshot]
+    [token, mode, order, windows, customsSnapshot, desktopKey]
   );
 
   const sortedFreeWindows = [...visibleWindows].sort((a, b) => a.z - b.z);
@@ -306,7 +330,6 @@ export function useWindowManager(customsSnapshot, restoreCustomsSnapshot, token)
     dragGhost,
     desktopRef,
     windowRefs,
-    visibleWindows,
     sortedFreeWindows,
     orderedGridWindows,
     bringToFront,
