@@ -245,7 +245,7 @@ export function useWindowManager(customsSnapshot, restoreCustomsSnapshot, token)
     dashboardData: customsSnapshot,
   });
 
-  const toStatePayload = () => ({
+  const toStatePayload = useCallback(() => ({
     mode,
     order,
     windows: windows.map(({ id, x, y, width, height, z, minimized }) => ({
@@ -259,9 +259,9 @@ export function useWindowManager(customsSnapshot, restoreCustomsSnapshot, token)
     })),
     dashboardData: customsSnapshot,
     updatedAtClient: new Date().toISOString(),
-  });
+  }), [mode, order, windows, customsSnapshot]);
 
-  const applyPayload = (layout) => {
+  const applyPayload = useCallback((layout) => {
     setMode(layout.mode || 'free');
     setOrder(layout.order || []);
     setWindows((current) => {
@@ -272,7 +272,7 @@ export function useWindowManager(customsSnapshot, restoreCustomsSnapshot, token)
       }));
     });
     restoreCustomsSnapshot(layout.dashboardData);
-  };
+  }, [restoreCustomsSnapshot]);
 
   const saveLocalFavorite = (name) => {
     const payload = { id: crypto.randomUUID(), ...toPayload(name) };
@@ -282,11 +282,11 @@ export function useWindowManager(customsSnapshot, restoreCustomsSnapshot, token)
     return payload;
   };
 
-  const fetchBackendFavorites = async () => {
+  const fetchBackendFavorites = useCallback(async () => {
     if (!token) return;
     const data = await fetchLayouts(token);
     setBackendFavorites(Array.isArray(data) ? data : []);
-  };
+  }, [token]);
 
   const saveBackendFavorite = async (name) => {
     if (!token) return null;
@@ -295,18 +295,18 @@ export function useWindowManager(customsSnapshot, restoreCustomsSnapshot, token)
     return data;
   };
 
-  const fetchAndApplyCurrentState = async () => {
+  const fetchAndApplyCurrentState = useCallback(async () => {
     if (!token) return;
     const data = await fetchCurrentState(token);
     if (data) {
       applyPayload(data);
     }
-  };
+  }, [token, applyPayload]);
 
-  const pushCurrentState = async () => {
+  const pushCurrentState = useCallback(async () => {
     if (!token) return;
     await syncCurrentState(token, toStatePayload());
-  };
+  }, [token, toStatePayload]);
 
   const clearBackendFavorites = () => setBackendFavorites([]);
 
