@@ -22,6 +22,7 @@ function AppShell() {
   const { snapshot, restoreSnapshot } = useCustomsData();
   const [token, setToken] = useState(localStorage.getItem(STORAGE_KEYS.token) || '');
   const [user, setUser] = useState(null);
+  const [authLoading, setAuthLoading] = useState(Boolean(localStorage.getItem(STORAGE_KEYS.token)));
   const [authForm, setAuthForm] = useState({ email: '', password: '' });
   const [authMessage, setAuthMessage] = useState('');
   const manager = useWindowManager(snapshot, restoreSnapshot, token);
@@ -45,6 +46,7 @@ function AppShell() {
       localStorage.setItem(STORAGE_KEYS.token, data.token);
       setToken(data.token);
       setUser(data.user);
+      setAuthForm({ email: '', password: '' });
       setAuthMessage(`Welcome ${data.user.name}`);
     } catch (error) {
       setAuthMessage(error.message || 'Login failed');
@@ -63,6 +65,7 @@ function AppShell() {
     const bootstrap = async () => {
       if (!token) {
         setUser(null);
+        setAuthLoading(false);
         return;
       }
       try {
@@ -73,6 +76,8 @@ function AppShell() {
       } catch {
         localStorage.removeItem(STORAGE_KEYS.token);
         setToken('');
+      } finally {
+        setAuthLoading(false);
       }
     };
 
@@ -101,6 +106,53 @@ function AppShell() {
         }
       : undefined;
 
+  const canSubmitLogin = authForm.email.trim() && authForm.password;
+
+  if (authLoading) {
+    return (
+      <div className="login-screen" data-theme={theme} style={frameStyle}>
+        <div className="login-card">
+          <h1>Border Customs Dashboard</h1>
+          <p>Checking your session...</p>
+        </div>
+      </div>
+    );
+  }
+
+  if (!token) {
+    return (
+      <div className="login-screen" data-theme={theme} style={frameStyle}>
+        <form
+          className="login-card"
+          onSubmit={(event) => {
+            event.preventDefault();
+            if (!canSubmitLogin) return;
+            login();
+          }}
+        >
+          <h1>Border Customs Dashboard</h1>
+          <p>Sign in with your backend credentials.</p>
+          <input
+            type="email"
+            placeholder="Email"
+            value={authForm.email}
+            onChange={(event) => setAuthForm((prev) => ({ ...prev, email: event.target.value }))}
+          />
+          <input
+            type="password"
+            placeholder="Password"
+            value={authForm.password}
+            onChange={(event) => setAuthForm((prev) => ({ ...prev, password: event.target.value }))}
+          />
+          <button type="submit" disabled={!canSubmitLogin}>
+            Login
+          </button>
+          {authMessage && <small>{authMessage}</small>}
+        </form>
+      </div>
+    );
+  }
+
   return (
     <div className="app-frame" data-theme={theme} style={frameStyle}>
       <TopNav user={user} onLogout={logout} />
@@ -111,11 +163,6 @@ function AppShell() {
         setTheme={setTheme}
         customTheme={customTheme}
         setCustomTheme={setCustomTheme}
-        token={token}
-        authForm={authForm}
-        setAuthForm={setAuthForm}
-        authMessage={authMessage}
-        onLogin={login}
       />
       <Taskbar
         manager={manager}

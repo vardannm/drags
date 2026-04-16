@@ -7,11 +7,6 @@ function Sidebar({
   setTheme,
   customTheme,
   setCustomTheme,
-  token,
-  authForm,
-  setAuthForm,
-  authMessage,
-  onLogin,
 }) {
   const { driverData, cargoTotals, netWeight, taxes } = useCustomsData();
 
@@ -43,23 +38,6 @@ function Sidebar({
             [{favorite.source}] {favorite.name}
           </button>
         ))}
-      </div>
-
-      <h3>Backend Login</h3>
-      <div className="panel">
-        <input
-          placeholder="Email"
-          value={authForm.email}
-          onChange={(event) => setAuthForm((prev) => ({ ...prev, email: event.target.value }))}
-        />
-        <input
-          type="password"
-          placeholder="Password"
-          value={authForm.password}
-          onChange={(event) => setAuthForm((prev) => ({ ...prev, password: event.target.value }))}
-        />
-        <button onClick={onLogin}>{token ? 'Re-login' : 'Login'}</button>
-        {authMessage && <small>{authMessage}</small>}
       </div>
 
       <h3>Theme</h3>

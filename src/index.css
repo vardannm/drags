@@ -34,6 +34,58 @@ body,
   color: var(--text-color);
 }
 
+.login-screen {
+  --bg-start: #1e293b;
+  --bg-mid: #0f172a;
+  --bg-end: #04060f;
+  --panel-bg: #0a1220;
+  --text-color: #dbe2f0;
+  --window-bg: rgba(15, 23, 42, 0.92);
+  --border-color: rgba(255, 255, 255, 0.15);
+  --input-bg: rgba(255, 255, 255, 0.07);
+  --accent-color: #2563eb;
+  width: 100%;
+  height: 100%;
+  display: grid;
+  place-items: center;
+  padding: 20px;
+  background: radial-gradient(circle at 12% 20%, var(--bg-start), var(--bg-mid) 40%, var(--bg-end));
+  color: var(--text-color);
+}
+
+.login-card {
+  width: min(460px, 100%);
+  display: grid;
+  gap: 10px;
+  border: 1px solid var(--border-color);
+  background: color-mix(in srgb, var(--window-bg), transparent 15%);
+  border-radius: 14px;
+  padding: 18px;
+}
+
+.login-card h1 {
+  margin: 0;
+  font-size: 24px;
+}
+
+.login-card p {
+  margin: 0 0 4px;
+  opacity: 0.8;
+}
+
+.login-card input {
+  background: var(--input-bg);
+  color: var(--text-color);
+  border: 1px solid var(--border-color);
+  border-radius: 8px;
+  padding: 10px 11px;
+}
+
+.login-card button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
 .app-frame[data-theme='sunrise'] {
   --bg-start: #ffd666;
   --bg-mid: #ff9b85;
@@ -139,6 +191,7 @@ body,
 .taskbar button,
 .favorite-manager button,
 .sidebar button,
+.login-card button,
 .ghost-btn,
 .primary-btn,
 .danger-btn {
