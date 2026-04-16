@@ -7,16 +7,17 @@ function FavoriteManager({ manager, token }) {
   const save = async () => {
     const finalName = name.trim() || `Layout ${Date.now()}`;
     manager.saveLocalFavorite(finalName);
+    if (!token) {
+      setStatus('Saved locally');
+      setName('');
+      return;
+    }
 
     try {
-      if (token) {
-        await manager.saveBackendFavorite(finalName);
-        setStatus('Saved locally + backend');
-      } else {
-        setStatus('Saved locally (login to sync backend)');
-      }
+      await manager.saveBackendFavorite(finalName);
+      setStatus('Saved locally + backend');
     } catch {
-      setStatus('Saved locally, backend sync failed');
+      setStatus('Saved locally (backend failed)');
     }
 
     setName('');

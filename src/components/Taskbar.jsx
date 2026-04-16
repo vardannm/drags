@@ -1,7 +1,7 @@
 import React from 'react';
 import FavoriteManager from './FavoriteManager';
 
-function Taskbar({ manager, token }) {
+function Taskbar({ manager, activeDesktop, onDesktopChange, token }) {
   const { mode, setMode, windows, restoreWindow } = manager;
 
   return (
@@ -12,6 +12,20 @@ function Taskbar({ manager, token }) {
         </button>
         <button className={mode === 'grid' ? 'active' : ''} onClick={() => setMode('grid')}>
           Grid Mode
+        </button>
+      </div>
+      <div className="mode-switch">
+        <button
+          className={activeDesktop === 'desktop-1' ? 'active' : ''}
+          onClick={() => onDesktopChange('desktop-1')}
+        >
+          Desktop 1
+        </button>
+        <button
+          className={activeDesktop === 'desktop-2' ? 'active' : ''}
+          onClick={() => onDesktopChange('desktop-2')}
+        >
+          Desktop 2
         </button>
       </div>
 

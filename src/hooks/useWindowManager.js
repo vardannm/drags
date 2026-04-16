@@ -7,6 +7,12 @@ import {
   normalizeWindowBounds,
   STORAGE_KEYS,
 } from '../utils/layoutUtils';
+import {
+  fetchCurrentState,
+  fetchLayouts,
+  saveLayout,
+  syncCurrentState,
+} from '../utils/api';
 
 const MIN_W = 250;
 const MIN_H = 160;
@@ -16,7 +22,7 @@ export function useWindowManager(customsSnapshot, restoreCustomsSnapshot, token)
   const [mode, setMode] = useState('free');
   const [windows, setWindows] = useState(createInitialWindows());
   const [order, setOrder] = useState(createInitialWindows().map((w) => w.id));
-  const [zCounter, setZCounter] = useState(20);
+  const zCounterRef = useRef(20);
   const [interaction, setInteraction] = useState(null);
   const [dragGhost, setDragGhost] = useState(null);
   const [backendFavorites, setBackendFavorites] = useState([]);
@@ -37,13 +43,11 @@ export function useWindowManager(customsSnapshot, restoreCustomsSnapshot, token)
   );
 
   const bringToFront = useCallback((id) => {
-    setZCounter((prev) => {
-      const next = prev + 1;
-      setWindows((current) =>
-        current.map((w) => (w.id === id ? { ...w, z: next, minimized: false } : w))
-      );
-      return next;
-    });
+    zCounterRef.current += 1;
+    const next = zCounterRef.current;
+    setWindows((current) =>
+      current.map((w) => (w.id === id ? { ...w, z: next, minimized: false } : w))
+    );
   }, []);
 
   const updateWindow = useCallback((id, patch) => {
@@ -241,6 +245,22 @@ export function useWindowManager(customsSnapshot, restoreCustomsSnapshot, token)
     dashboardData: customsSnapshot,
   });
 
+  const toStatePayload = () => ({
+    mode,
+    order,
+    windows: windows.map(({ id, x, y, width, height, z, minimized }) => ({
+      id,
+      x,
+      y,
+      width,
+      height,
+      z,
+      minimized,
+    })),
+    dashboardData: customsSnapshot,
+    updatedAtClient: new Date().toISOString(),
+  });
+
   const applyPayload = (layout) => {
     setMode(layout.mode || 'free');
     setOrder(layout.order || []);
@@ -262,34 +282,33 @@ export function useWindowManager(customsSnapshot, restoreCustomsSnapshot, token)
     return payload;
   };
 
-  const fetchBackendFavorites = useCallback(async () => {
+  const fetchBackendFavorites = async () => {
     if (!token) return;
-    const response = await fetch('/api/layouts', {
-      headers: { Authorization: `Bearer ${token}` },
-    });
-    if (!response.ok) return;
-    const data = await response.json();
-    setBackendFavorites(data);
-  }, [token]);
+    const data = await fetchLayouts(token);
+    setBackendFavorites(Array.isArray(data) ? data : []);
+  };
 
-  const saveBackendFavorite = useCallback(
-    async (name) => {
-      if (!token) return null;
-      const response = await fetch('/api/layouts/save', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          Authorization: `Bearer ${token}`,
-        },
-        body: JSON.stringify(toPayload(name)),
-      });
-      if (!response.ok) throw new Error('Could not save backend layout');
-      const data = await response.json();
-      setBackendFavorites((prev) => [data, ...prev]);
-      return data;
-    },
-    [token, mode, order, windows, customsSnapshot]
-  );
+  const saveBackendFavorite = async (name) => {
+    if (!token) return null;
+    const data = await saveLayout(token, toPayload(name));
+    setBackendFavorites((prev) => [data, ...prev]);
+    return data;
+  };
+
+  const fetchAndApplyCurrentState = async () => {
+    if (!token) return;
+    const data = await fetchCurrentState(token);
+    if (data) {
+      applyPayload(data);
+    }
+  };
+
+  const pushCurrentState = async () => {
+    if (!token) return;
+    await syncCurrentState(token, toStatePayload());
+  };
+
+  const clearBackendFavorites = () => setBackendFavorites([]);
 
   const sortedFreeWindows = [...visibleWindows].sort((a, b) => a.z - b.z);
   const orderedGridWindows = order
@@ -318,8 +337,11 @@ export function useWindowManager(customsSnapshot, restoreCustomsSnapshot, token)
     localFavorites,
     backendFavorites,
     saveLocalFavorite,
-    saveBackendFavorite,
     fetchBackendFavorites,
+    saveBackendFavorite,
+    fetchAndApplyCurrentState,
+    pushCurrentState,
+    clearBackendFavorites,
     applyPayload,
     gridColumns: GRID_COLUMNS,
   };

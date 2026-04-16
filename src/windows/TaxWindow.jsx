@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { useCustomsData } from '../context/CustomsDataContext';
+import { useCustomsData } from '../context/useCustomsData';
 
 function TaxWindow() {
   const { taxConfig, setTaxConfig, taxes, netWeight, cargoTotals } = useCustomsData();
