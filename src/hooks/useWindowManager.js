@@ -36,6 +36,11 @@ export function useWindowManager(customsSnapshot, restoreCustomsSnapshot, token)
 
   const desktopRef = useRef(null);
   const windowRefs = useRef({});
+  const restoreSnapshotRef = useRef(restoreCustomsSnapshot);
+
+  useEffect(() => {
+    restoreSnapshotRef.current = restoreCustomsSnapshot;
+  }, [restoreCustomsSnapshot]);
 
   const visibleWindows = useMemo(
     () => windows.filter((w) => !w.closed && !w.minimized),
@@ -271,8 +276,8 @@ export function useWindowManager(customsSnapshot, restoreCustomsSnapshot, token)
         ...(map.get(w.id) || {}),
       }));
     });
-    restoreCustomsSnapshot(layout.dashboardData);
-  }, [restoreCustomsSnapshot]);
+    restoreSnapshotRef.current?.(layout.dashboardData);
+  }, []);
 
   const saveLocalFavorite = (name) => {
     const payload = { id: crypto.randomUUID(), ...toPayload(name) };
