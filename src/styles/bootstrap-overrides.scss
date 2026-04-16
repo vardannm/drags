@@ -1,0 +1,86 @@
+$theme-colors: (
+  "primary": #ff0000,
+  "secondary": #6c757d,
+  "success": #198754,
+  "danger": #DC3545,
+  "warning": #E8B6B8,
+  "info": #0dcaf0,
+  "light": #f8f9fa,
+  "dark": #212529,
+  "cs-purple": #6f42c1,
+  "cs-orange": #fd7e14,
+  "cs-blue": #055160,
+  "cs-green": #198754,
+  "cs-red": #cc3d44,
+  "cs-gray": #b6c1c4,
+);
+
+.cs-text-blue {
+  color: map-get($theme-colors, "cs-blue");
+}
+.form-label {
+  font-size: 14px !important;
+}
+.form-control {
+  height: 32px !important;
+}
+textarea.form-control {
+  height: auto !important;
+}
+.form-select {
+  height: 32px !important;
+  padding: 0 !important;
+  padding-left: 14px !important;
+}
+.accordion-body {
+  padding: 9px !important;
+  gap: 4px;
+}
+.accordion-header {
+  padding: 0px !important;
+}
+.react-datepicker-popper {
+  z-index: 3 !important;
+}
+.custom-focus:focus {
+  border-color: #dc3545 !important;
+  box-shadow: 0 0 8px 2px rgba(220, 53, 69, 0.8) !important;
+  animation: glow 1.5s infinite alternate;
+}
+
+@keyframes glow {
+  from {
+    box-shadow: 0 0 5px 2px rgba(220, 53, 69, 0.6);
+  }
+  to {
+    box-shadow: 0 0 15px 6px rgba(220, 53, 69, 1);
+  }
+}
+
+.accordion-button {
+  padding: 10px !important;
+  height: auto !important;
+  min-height: unset !important;
+  line-height: normal !important;
+}
+.table th {
+  font-size: 14px;
+}
+.table td {
+  font-size: 14px;
+}
+.cs-backgound-light {
+  color: map-get($theme-colors, "light");
+}
+.fit-content-modal .modal-dialog {
+  width: fit-content;
+  max-width: 90vw;
+}
+.react-datepicker-popper {
+  z-index: 9999 !important;
+}
+.fit-content-modal .modal-content {
+  width: auto;
+}
+
+@import "bootstrap/scss/bootstrap";

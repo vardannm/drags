@@ -449,6 +449,9 @@ body,
   border: 1px solid var(--border-color);
   background: color-mix(in srgb, var(--window-bg), transparent 30%);
   border-radius: 10px;
+}
+
+.cargo-card .card-body {
   padding: 8px;
   display: grid;
   gap: 8px;
@@ -522,4 +525,8 @@ body,
   .sidebar {
     display: none;
   }
+}
+
+.window-form .btn {
+  border-radius: 8px;
 }

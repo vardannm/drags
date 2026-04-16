@@ -1,4 +1,8 @@
 import React from 'react';
+import Button from 'react-bootstrap/Button';
+import Card from 'react-bootstrap/Card';
+import Form from 'react-bootstrap/Form';
+
 import { useCustomsData } from '../context/useCustomsData';
 
 function CargoWindow() {
@@ -12,66 +16,68 @@ function CargoWindow() {
   const removeItem = (id) => setCargoItems((prev) => prev.filter((item) => item.id !== id));
 
   return (
-    <div className="window-form">
+    <Form className="window-form">
       <div className="row-between">
         <h3>Cargo Declaration</h3>
-        <button className="ghost-btn" onClick={addItem}>
+        <Button variant="outline-secondary" size="sm" onClick={addItem}>
           + Add Item
-        </button>
+        </Button>
       </div>
 
       <div className="cargo-list">
         {cargoItems.map((item, idx) => (
-          <div key={item.id} className="cargo-card">
-            <div className="row-between">
-              <strong>Item #{idx + 1}</strong>
-              {cargoItems.length > 1 && (
-                <button className="danger-btn" onClick={() => removeItem(item.id)}>
-                  Remove
-                </button>
-              )}
-            </div>
-            <label>
-              Description
-              <input
-                value={item.description}
-                onChange={(e) => updateItem(item.id, 'description', e.target.value)}
-              />
-            </label>
-            <label>
-              HS Code
-              <input value={item.hsCode} onChange={(e) => updateItem(item.id, 'hsCode', e.target.value)} />
-            </label>
-            <div className="inline-grid">
-              <label>
-                Qty
-                <input
-                  type="number"
-                  value={item.quantity}
-                  onChange={(e) => updateItem(item.id, 'quantity', e.target.value)}
+          <Card key={item.id} className="cargo-card">
+            <Card.Body>
+              <div className="row-between">
+                <strong>Item #{idx + 1}</strong>
+                {cargoItems.length > 1 && (
+                  <Button variant="danger" size="sm" onClick={() => removeItem(item.id)}>
+                    Remove
+                  </Button>
+                )}
+              </div>
+              <Form.Group>
+                <Form.Label>Description</Form.Label>
+                <Form.Control
+                  value={item.description}
+                  onChange={(e) => updateItem(item.id, 'description', e.target.value)}
                 />
-              </label>
-              <label>
-                Unit Value
-                <input
-                  type="number"
-                  value={item.value}
-                  onChange={(e) => updateItem(item.id, 'value', e.target.value)}
-                />
-              </label>
-            </div>
-            <label>
-              Origin
-              <input value={item.origin} onChange={(e) => updateItem(item.id, 'origin', e.target.value)} />
-            </label>
-          </div>
+              </Form.Group>
+              <Form.Group>
+                <Form.Label>HS Code</Form.Label>
+                <Form.Control value={item.hsCode} onChange={(e) => updateItem(item.id, 'hsCode', e.target.value)} />
+              </Form.Group>
+              <div className="inline-grid">
+                <Form.Group>
+                  <Form.Label>Qty</Form.Label>
+                  <Form.Control
+                    type="number"
+                    value={item.quantity}
+                    onChange={(e) => updateItem(item.id, 'quantity', e.target.value)}
+                  />
+                </Form.Group>
+                <Form.Group>
+                  <Form.Label>Unit Value</Form.Label>
+                  <Form.Control
+                    type="number"
+                    value={item.value}
+                    onChange={(e) => updateItem(item.id, 'value', e.target.value)}
+                  />
+                </Form.Group>
+              </div>
+              <Form.Group>
+                <Form.Label>Origin</Form.Label>
+                <Form.Control value={item.origin} onChange={(e) => updateItem(item.id, 'origin', e.target.value)} />
+              </Form.Group>
+            </Card.Body>
+          </Card>
         ))}
       </div>
 
       <div className="summary-chip">
         Total Qty: {cargoTotals.totalQuantity} | Total Value: ${cargoTotals.totalValue.toLocaleString()}
       </div>
-    </div>
+    </Form>
   );
 }
 
