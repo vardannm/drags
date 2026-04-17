@@ -155,6 +155,7 @@ function AppShell() {
 
   return (
     <div className="app-frame" data-theme={theme} style={frameStyle}>
+      <UpperBar />
       <TopNav user={user} onLogout={logout} />
       <Desktop manager={manager} activeDesktop={activeDesktop} />
       <Sidebar

@@ -4,7 +4,6 @@ import src from "../assets/src.svg";
 
 function UpperBar() {
 
-  const config = useSelector((state) => state.config.data);
 
  
   return (
@@ -12,9 +11,9 @@ function UpperBar() {
       <img src={coatOfArms} alt="coatOfArms" className="barImg" />
       
     
-        <h1 className="text-primary text-center fw-bold text-uppercase flex-grow-1">
+        <h3 className="text-cs-blue text-center fw-bold text-uppercase flex-grow-1">
           Հայաստանի հանրապետության Արտաքին առեւտրի ազգային մեկ պատուհան
-        </h1>
+        </h3>
       
       
       <img src={src} alt="src" className="barImg" />

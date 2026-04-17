@@ -123,12 +123,9 @@ body,
 }
 
 .desktop-area {
-  position: absolute;
-  top: 52px;
-  left: 0;
-  right: 300px;
-  bottom: 72px;
-  overflow: hidden;
+  position: relative;
+  width: 84%;
+  height: 100vh;
   padding: 12px;
 }
 
@@ -354,12 +351,11 @@ body,
 }
 
 .top-nav {
-  position: absolute;
-  top: 10px;
-  left: 12px;          
-  right: 12px;          
+  position: sticky;
+  background:#055160;
+  width: 100%;      
+  padding: 0px 3rem;
   z-index: 30;
-  
   display: flex;                    
   justify-content: space-between;   
   align-items: center;              
@@ -367,8 +363,8 @@ body,
 }
 
 .offcanvas-button {
-  border: 1px solid var(--border-color);
-  background: color-mix(in srgb, var(--window-bg), #fff 14%);
+  background: transparent;
+  border:none;
   color: var(--text-color);
   border-radius: 10px;
   padding: 8px 12px;
@@ -377,12 +373,16 @@ body,
 }
 
 .top-nav-trigger {
-  border: 1px solid var(--border-color);
-  background: color-mix(in srgb, var(--window-bg), #fff 14%);
+  border: none;
+  background: transparent;
   color: var(--text-color);
+  text-transform: uppercase;
   border-radius: 10px;
   padding: 8px 12px;
   cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
   margin-left: auto;        
 }
 
@@ -537,10 +537,8 @@ body,
   background: color-mix(in srgb, var(--accent-color), transparent 80%);
 }
 .upper-bar{
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
+  position: relative;
+  
 }
 @media (max-width: 1200px) {
   .desktop-area {
