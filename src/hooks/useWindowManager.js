@@ -268,7 +268,17 @@ export function useWindowManager(customsSnapshot, restoreCustomsSnapshot, token)
 
   const applyPayload = useCallback((layout) => {
     setMode(layout.mode || 'free');
-    setOrder(layout.order || []);
+    setOrder((prev) => {
+      const explicitOrder = Array.isArray(layout.order) ? layout.order.filter(Boolean) : [];
+      if (explicitOrder.length > 0) return explicitOrder;
+
+      const inferredOrder = Array.isArray(layout.windows)
+        ? layout.windows.map((w) => w.id).filter(Boolean)
+        : [];
+      if (inferredOrder.length > 0) return inferredOrder;
+
+      return prev;
+    });
     setWindows((current) => {
       const map = new Map((layout.windows || []).map((w) => [w.id, w]));
       return current.map((w) => ({
