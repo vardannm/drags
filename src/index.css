@@ -356,8 +356,24 @@ body,
 .top-nav {
   position: absolute;
   top: 10px;
-  right: 12px;
+  left: 12px;          
+  right: 12px;          
   z-index: 30;
+  
+  display: flex;                    
+  justify-content: space-between;   
+  align-items: center;              
+  gap: 8px;                         
+}
+
+.offcanvas-button {
+  border: 1px solid var(--border-color);
+  background: color-mix(in srgb, var(--window-bg), #fff 14%);
+  color: var(--text-color);
+  border-radius: 10px;
+  padding: 8px 12px;
+  cursor: pointer;
+
 }
 
 .top-nav-trigger {
@@ -367,9 +383,13 @@ body,
   border-radius: 10px;
   padding: 8px 12px;
   cursor: pointer;
+  margin-left: auto;        
 }
 
 .top-nav-menu {
+  position: absolute;
+  top: 100%;
+  right: 0;                 
   margin-top: 8px;
   border: 1px solid var(--border-color);
   background: color-mix(in srgb, var(--panel-bg), #fff 5%);
@@ -385,7 +405,6 @@ body,
   opacity: 0.8;
   word-break: break-all;
 }
-
 .sidebar h3 {
   margin: 0 0 10px;
   letter-spacing: 0.05em;
@@ -517,7 +536,12 @@ body,
 .data-table th {
   background: color-mix(in srgb, var(--accent-color), transparent 80%);
 }
-
+.upper-bar{
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+}
 @media (max-width: 1200px) {
   .desktop-area {
     right: 0;

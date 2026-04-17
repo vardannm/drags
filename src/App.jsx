@@ -8,7 +8,7 @@ import { useCustomsData } from './context/useCustomsData';
 import { useWindowManager } from './hooks/useWindowManager';
 import { STORAGE_KEYS } from './utils/layoutUtils';
 import { getMe, loginUser } from './utils/api';
-
+import UpperBar from './components/UpperBar';
 const initialCustomTheme = {
   bgStart: '#1a1027',
   bgMid: '#121d3d',
