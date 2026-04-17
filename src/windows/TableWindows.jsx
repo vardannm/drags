@@ -1,4 +1,5 @@
 import React from 'react';
+import Table from 'react-bootstrap/Table';
 
 const shipments = [
   { id: 'SHP-1001', route: 'Tbilisi → Batumi', carrier: 'Caspian Move', status: 'In Transit' },
@@ -27,7 +28,7 @@ const payments = [
 function DataTable({ columns, rows }) {
   return (
     <div className="table-wrap">
-      <table className="data-table">
+      <Table striped bordered hover responsive size="sm" variant="dark">
         <thead>
           <tr>
             {columns.map((col) => (
@@ -44,7 +45,7 @@ function DataTable({ columns, rows }) {
             </tr>
           ))}
         </tbody>
-      </table>
+      </Table>
     </div>
   );
 }

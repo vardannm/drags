@@ -36,6 +36,11 @@ export function useWindowManager(customsSnapshot, restoreCustomsSnapshot, token)
 
   const desktopRef = useRef(null);
   const windowRefs = useRef({});
+  const restoreSnapshotRef = useRef(restoreCustomsSnapshot);
+
+  useEffect(() => {
+    restoreSnapshotRef.current = restoreCustomsSnapshot;
+  }, [restoreCustomsSnapshot]);
 
   const visibleWindows = useMemo(
     () => windows.filter((w) => !w.closed && !w.minimized),
@@ -245,7 +250,7 @@ export function useWindowManager(customsSnapshot, restoreCustomsSnapshot, token)
     dashboardData: customsSnapshot,
   });
 
-  const toStatePayload = () => ({
+  const toStatePayload = useCallback(() => ({
     mode,
     order,
     windows: windows.map(({ id, x, y, width, height, z, minimized }) => ({
@@ -259,11 +264,21 @@ export function useWindowManager(customsSnapshot, restoreCustomsSnapshot, token)
     })),
     dashboardData: customsSnapshot,
     updatedAtClient: new Date().toISOString(),
-  });
+  }), [mode, order, windows, customsSnapshot]);
 
-  const applyPayload = (layout) => {
+  const applyPayload = useCallback((layout) => {
     setMode(layout.mode || 'free');
-    setOrder(layout.order || []);
+    setOrder((prev) => {
+      const explicitOrder = Array.isArray(layout.order) ? layout.order.filter(Boolean) : [];
+      if (explicitOrder.length > 0) return explicitOrder;
+
+      const inferredOrder = Array.isArray(layout.windows)
+        ? layout.windows.map((w) => w.id).filter(Boolean)
+        : [];
+      if (inferredOrder.length > 0) return inferredOrder;
+
+      return prev;
+    });
     setWindows((current) => {
       const map = new Map((layout.windows || []).map((w) => [w.id, w]));
       return current.map((w) => ({
@@ -271,8 +286,8 @@ export function useWindowManager(customsSnapshot, restoreCustomsSnapshot, token)
         ...(map.get(w.id) || {}),
       }));
     });
-    restoreCustomsSnapshot(layout.dashboardData);
-  };
+    restoreSnapshotRef.current?.(layout.dashboardData);
+  }, []);
 
   const saveLocalFavorite = (name) => {
     const payload = { id: crypto.randomUUID(), ...toPayload(name) };
@@ -282,11 +297,11 @@ export function useWindowManager(customsSnapshot, restoreCustomsSnapshot, token)
     return payload;
   };
 
-  const fetchBackendFavorites = async () => {
+  const fetchBackendFavorites = useCallback(async () => {
     if (!token) return;
     const data = await fetchLayouts(token);
     setBackendFavorites(Array.isArray(data) ? data : []);
-  };
+  }, [token]);
 
   const saveBackendFavorite = async (name) => {
     if (!token) return null;
@@ -295,18 +310,18 @@ export function useWindowManager(customsSnapshot, restoreCustomsSnapshot, token)
     return data;
   };
 
-  const fetchAndApplyCurrentState = async () => {
+  const fetchAndApplyCurrentState = useCallback(async () => {
     if (!token) return;
     const data = await fetchCurrentState(token);
     if (data) {
       applyPayload(data);
     }
-  };
+  }, [token, applyPayload]);
 
-  const pushCurrentState = async () => {
+  const pushCurrentState = useCallback(async () => {
     if (!token) return;
     await syncCurrentState(token, toStatePayload());
-  };
+  }, [token, toStatePayload]);
 
   const clearBackendFavorites = () => setBackendFavorites([]);
 

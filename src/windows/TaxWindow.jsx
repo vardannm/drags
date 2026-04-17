@@ -1,4 +1,7 @@
 import React, { useState } from 'react';
+import Button from 'react-bootstrap/Button';
+import Form from 'react-bootstrap/Form';
+
 import { useCustomsData } from '../context/useCustomsData';
 
 function TaxWindow() {
@@ -16,31 +19,31 @@ function TaxWindow() {
   };
 
   return (
-    <div className="window-form">
+    <Form className="window-form">
       <h3>Tax & Payment</h3>
       <div className="inline-grid">
-        <label>
-          Duty %
-          <input
+        <Form.Group>
+          <Form.Label>Duty %</Form.Label>
+          <Form.Control
             type="number"
             value={taxConfig.dutyRate}
             onChange={(e) => update('dutyRate', e.target.value)}
           />
-        </label>
-        <label>
-          VAT %
-          <input type="number" value={taxConfig.vatRate} onChange={(e) => update('vatRate', e.target.value)} />
-        </label>
+        </Form.Group>
+        <Form.Group>
+          <Form.Label>VAT %</Form.Label>
+          <Form.Control type="number" value={taxConfig.vatRate} onChange={(e) => update('vatRate', e.target.value)} />
+        </Form.Group>
       </div>
 
-      <label>
-        Additional Fee
-        <input
+      <Form.Group>
+        <Form.Label>Additional Fee</Form.Label>
+        <Form.Control
           type="number"
           value={taxConfig.additionalFee}
           onChange={(e) => update('additionalFee', e.target.value)}
         />
-      </label>
+      </Form.Group>
 
       <div className="tax-grid">
         <div>Total Cargo Value</div>
@@ -58,16 +61,16 @@ function TaxWindow() {
       </div>
 
       <div className="row-between">
-        <button className="ghost-btn" onClick={calculate}>
+        <Button variant="outline-secondary" onClick={calculate}>
           Calculate
-        </button>
-        <button className="primary-btn" onClick={pay} disabled={taxConfig.paid}>
+        </Button>
+        <Button variant="cs-blue" onClick={pay} disabled={taxConfig.paid}>
           {taxConfig.paid ? 'Paid ✅' : 'Pay Now'}
-        </button>
+        </Button>
       </div>
 
       {lastCalculatedAt && <small>Last calculated at: {lastCalculatedAt}</small>}
-    </div>
+    </Form>
   );
 }
 

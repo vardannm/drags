@@ -1,4 +1,6 @@
 import React from 'react';
+import Form from 'react-bootstrap/Form';
+
 import { useCustomsData } from '../context/useCustomsData';
 
 function DriverWindow() {
@@ -9,36 +11,36 @@ function DriverWindow() {
   };
 
   return (
-    <div className="window-form two-col">
+    <Form className="window-form two-col">
       <h3>Driver Identification</h3>
-      <label>
-        Full Name
-        <input value={driverData.fullName} onChange={(e) => update('fullName', e.target.value)} />
-      </label>
-      <label>
-        Passport / ID
-        <input value={driverData.passportId} onChange={(e) => update('passportId', e.target.value)} />
-      </label>
-      <label>
-        Nationality
-        <input value={driverData.nationality} onChange={(e) => update('nationality', e.target.value)} />
-      </label>
-      <label>
-        Vehicle Plate
-        <input value={driverData.vehiclePlate} onChange={(e) => update('vehiclePlate', e.target.value)} />
-      </label>
-      <label>
-        License Number
-        <input value={driverData.licenseNumber} onChange={(e) => update('licenseNumber', e.target.value)} />
-      </label>
-      <label>
-        Transport Company
-        <input
+      <Form.Group>
+        <Form.Label>Full Name</Form.Label>
+        <Form.Control value={driverData.fullName} onChange={(e) => update('fullName', e.target.value)} />
+      </Form.Group>
+      <Form.Group>
+        <Form.Label>Passport / ID</Form.Label>
+        <Form.Control value={driverData.passportId} onChange={(e) => update('passportId', e.target.value)} />
+      </Form.Group>
+      <Form.Group>
+        <Form.Label>Nationality</Form.Label>
+        <Form.Control value={driverData.nationality} onChange={(e) => update('nationality', e.target.value)} />
+      </Form.Group>
+      <Form.Group>
+        <Form.Label>Vehicle Plate</Form.Label>
+        <Form.Control value={driverData.vehiclePlate} onChange={(e) => update('vehiclePlate', e.target.value)} />
+      </Form.Group>
+      <Form.Group>
+        <Form.Label>License Number</Form.Label>
+        <Form.Control value={driverData.licenseNumber} onChange={(e) => update('licenseNumber', e.target.value)} />
+      </Form.Group>
+      <Form.Group>
+        <Form.Label>Transport Company</Form.Label>
+        <Form.Control
           value={driverData.transportCompany}
           onChange={(e) => update('transportCompany', e.target.value)}
         />
-      </label>
-    </div>
+      </Form.Group>
+    </Form>
   );
 }
 
