@@ -28,7 +28,7 @@ const payments = [
 function DataTable({ columns, rows }) {
   return (
     <div className="table-wrap">
-      <Table striped bordered hover responsive size="sm" variant="dark">
+      <Table striped bordered hover responsive size="sm" className="table-class">
         <thead>
           <tr>
             {columns.map((col) => (

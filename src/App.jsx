@@ -9,6 +9,7 @@ import { useWindowManager } from './hooks/useWindowManager';
 import { STORAGE_KEYS } from './utils/layoutUtils';
 import { getMe, loginUser } from './utils/api';
 import UpperBar from './components/UpperBar';
+import Footer from './components/Footer';
 const initialCustomTheme = {
   bgStart: '#1a1027',
   bgMid: '#121d3d',
@@ -155,6 +156,7 @@ function AppShell() {
 
   return (
     <div className="app-frame" data-theme={theme} style={frameStyle}>
+      <UpperBar />
       <TopNav user={user} onLogout={logout} />
       <Desktop manager={manager} activeDesktop={activeDesktop} />
       <Sidebar
@@ -170,6 +172,7 @@ function AppShell() {
         onDesktopChange={setActiveDesktop}
         token={token}
       />
+      <Footer />
     </div>
   );
 }
