@@ -5,7 +5,7 @@ import Form from 'react-bootstrap/Form';
 
 import { useCustomsData } from '../context/useCustomsData';
 
-function CargoWindow() {
+function CargoWindow({ readOnly = false }) {
   const { cargoItems, setCargoItems, createCargoItem, cargoTotals } = useCustomsData();
 
   const updateItem = (id, key, value) => {
@@ -19,7 +19,7 @@ function CargoWindow() {
     <Form className="window-form">
       <div className="row-between">
         <h3>Cargo Declaration</h3>
-        <Button variant="outline-secondary" size="sm" onClick={addItem}>
+        <Button variant="outline-secondary" size="sm" onClick={addItem} disabled={readOnly}>
           + Add Item
         </Button>
       </div>
@@ -31,7 +31,7 @@ function CargoWindow() {
               <div className="row-between">
                 <strong>Item #{idx + 1}</strong>
                 {cargoItems.length > 1 && (
-                  <Button variant="danger" size="sm" onClick={() => removeItem(item.id)}>
+                  <Button variant="danger" size="sm" onClick={() => removeItem(item.id)} disabled={readOnly}>
                     Remove
                   </Button>
                 )}
@@ -39,18 +39,20 @@ function CargoWindow() {
               <Form.Group>
                 <Form.Label>Description</Form.Label>
                 <Form.Control
+                  readOnly={readOnly}
                   value={item.description}
                   onChange={(e) => updateItem(item.id, 'description', e.target.value)}
                 />
               </Form.Group>
               <Form.Group>
                 <Form.Label>HS Code</Form.Label>
-                <Form.Control value={item.hsCode} onChange={(e) => updateItem(item.id, 'hsCode', e.target.value)} />
+                <Form.Control readOnly={readOnly} value={item.hsCode} onChange={(e) => updateItem(item.id, 'hsCode', e.target.value)} />
               </Form.Group>
               <div className="inline-grid">
                 <Form.Group>
                   <Form.Label>Qty</Form.Label>
                   <Form.Control
+                    readOnly={readOnly}
                     type="number"
                     value={item.quantity}
                     onChange={(e) => updateItem(item.id, 'quantity', e.target.value)}
@@ -59,6 +61,7 @@ function CargoWindow() {
                 <Form.Group>
                   <Form.Label>Unit Value</Form.Label>
                   <Form.Control
+                    readOnly={readOnly}
                     type="number"
                     value={item.value}
                     onChange={(e) => updateItem(item.id, 'value', e.target.value)}
@@ -67,7 +70,7 @@ function CargoWindow() {
               </div>
               <Form.Group>
                 <Form.Label>Origin</Form.Label>
-                <Form.Control value={item.origin} onChange={(e) => updateItem(item.id, 'origin', e.target.value)} />
+                <Form.Control readOnly={readOnly} value={item.origin} onChange={(e) => updateItem(item.id, 'origin', e.target.value)} />
               </Form.Group>
             </Card.Body>
           </Card>
