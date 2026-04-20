@@ -10,6 +10,7 @@ import { STORAGE_KEYS } from './utils/layoutUtils';
 import { getMe, loginUser } from './utils/api';
 import UpperBar from './components/UpperBar';
 import Footer from './components/Footer';
+import PageName from './components/PageName';
 const initialCustomTheme = {
   bgStart: '#1a1027',
   bgMid: '#121d3d',
@@ -158,6 +159,7 @@ function AppShell() {
     <div className="app-frame" data-theme={theme} style={frameStyle}>
       <UpperBar />
       <TopNav user={user} onLogout={logout} />
+      <PageName />
       <Desktop manager={manager} activeDesktop={activeDesktop} />
       <Sidebar
         manager={manager}
