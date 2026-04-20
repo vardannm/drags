@@ -1,6 +1,16 @@
 import React from 'react';
 import { FaEye, FaImage, FaPencilAlt } from 'react-icons/fa';
+import { FaTruck, FaCar } from "react-icons/fa";
+import { IoIosMan } from "react-icons/io";
+import { FiMaximize2, FiMinimize2 } from "react-icons/fi";
+import CarTruck from "../assets/CarTruck.svg";
+import arrow from "../assets/arrow.svg";
 
+import { TbArrowsDoubleNeSw } from "react-icons/tb";
+import { useState } from 'react';
+import { Table } from 'react-bootstrap';
+import { BsGearWide, BsPencil } from 'react-icons/bs';
+import { MdOutlineRemoveRedEye } from 'react-icons/md';
 const fakeTransportRows = [
   {
     id: '209SR05',
@@ -111,35 +121,81 @@ function RiskIndicator({ color }) {
 
 function TransportTablePage({ onOpen }) {
   const emptyRows = Array.from({ length: 6 });
+  const [collapsed, setCollapsed] = useState(false);
+    const toggleMenu = () => {
+    setCollapsed((prev) => !prev);
+  };
 
   return (
     <main className="transport-table-page">
-      <div className="panel table-shell">
-        <h2>Տրանսպորտ. միջոցներ</h2>
-        <div className="table-wrap">
-          <table className="data-table transport-rich-table">
+       <div className="category">
+          <div className="category-filter">
+            <button className="arrow-icon" onClick={toggleMenu}>
+              <img src={arrow} className={collapsed ? "rotated" : ""} />
+            </button>
+            <div
+              className={`menu-content ${collapsed ? "collapsed" : "expanded"}`}
+            >
+              <button className="category-button">
+                <img src={CarTruck} className="category-icon" />
+              </button>
+
+              <button className="category-button">
+                <FaTruck className="category-icon" />
+              </button>
+
+              <button className="category-button">
+                <FaCar className="category-icon" />
+              </button>
+
+              <button className="category-button">
+                <IoIosMan className="category-icon" />
+              </button>
+
+              <div className="category-sides">
+                <button className="category-side-button">
+                  <FiMaximize2 className="category-side-icon" />
+                </button>
+
+                <button className="category-side-button">
+                  <FiMinimize2 className="category-side-icon" />
+                </button>
+
+                <button className="category-side-button">
+                  <TbArrowsDoubleNeSw className="category-side-icon" />
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      <div className="panel">
+        
+          <Table className="mb-4 text-center  transport-rich-table "responsive size='sm'  striped bordered hover>
             <thead>
               <tr>
-                <th rowSpan={2}>⚙</th>
+                <th rowSpan={2}>
+                  <button className="plus mx-auto">
+                    <BsGearWide className="text-cs-blue" />
+                  </button>
+                </th>
                 <th rowSpan={2}>Տրանսպորտային միջոցի համարանիշ</th>
-                <th rowSpan={2}>Կոդ</th>
+                <th rowSpan={2}>Կցորդի (կիսակցորդի) համարանիշ</th>
                 <th rowSpan={2}>Ուղղություն</th>
-                <th rowSpan={2}>Պետություն</th>
-                <th rowSpan={2}>Գրանցման թիվ</th>
+                <th rowSpan={2}>Գրանցման երկիր</th>
+                <th rowSpan={2}>Տեսակ</th>
+                <th rowSpan={2}>Մակնիշ</th>
                 <th rowSpan={2}>Մոդել</th>
-                <th rowSpan={2}>Առանցք</th>
                 <th rowSpan={2}>Գույն</th>
                 <th rowSpan={2}>Թողարկման տարի</th>
-                <th rowSpan={2}>Շասսի</th>
-                <th rowSpan={2}>VIN կոդ</th>
-                <th rowSpan={2}>Վարորդի տեսակը</th>
-                <th rowSpan={2}>Վարորդի ազգությունը</th>
-                <th rowSpan={2}>Վարորդի անձնագիր</th>
-                <th rowSpan={2}>Մուտքի ամսաթիվ</th>
-                <th rowSpan={2}>Ելքի ամսաթիվ</th>
+                <th rowSpan={2}>Տրանսպորտային միջոցի VIN կոդ</th>
+                <th rowSpan={2}>Կցորդի (կիսակցորդի) VIN կոդ</th>
+                <th rowSpan={2}>Վարորդի անուն</th>
+                <th rowSpan={2}>Վարորդի ազգանուն</th>
+                <th rowSpan={2}>Վարորդի անձը հաստատող փաստաթղթի տվյալ</th>
+                <th rowSpan={2}>Ծննդյան ամսաթիվ</th>
+                <th rowSpan={2}>Սահմանա-հատման ամսաթիվ, ժամ</th>
                 <th colSpan={5}>Ռիսկեր</th>
                 <th rowSpan={2}>Վարորդի նկար</th>
-                <th rowSpan={2}>Կցորդի նկար</th>
               </tr>
               <tr>
                 {riskColumns.map((column) => (
@@ -151,12 +207,12 @@ function TransportTablePage({ onOpen }) {
               {fakeTransportRows.map((row) => (
                 <tr key={`${row.id}-${row.vin}`}>
                   <td>
-                    <div className="row-actions">
-                      <button type="button" title="Դիտել" onClick={() => onOpen(row, 'view')}>
-                        <FaEye />
+                    <div className="operations-col">
+                      <button className='table-button' title="Դիտել" onClick={() => onOpen(row, 'view')}>
+                        <MdOutlineRemoveRedEye />
                       </button>
-                      <button type="button" title="Խմբագրել" onClick={() => onOpen(row, 'edit')}>
-                        <FaPencilAlt />
+                      <button className='table-button' title="Խմբագրել" onClick={() => onOpen(row, 'edit')}>
+                      <BsPencil />
                       </button>
                     </div>
                   </td>
@@ -186,26 +242,21 @@ function TransportTablePage({ onOpen }) {
                       <FaImage />
                     </button>
                   </td>
-                  <td>
-                    <button type="button" className="image-btn" title="Trailer image">
-                      <FaImage />
-                    </button>
-                  </td>
                 </tr>
               ))}
 
               {emptyRows.map((_, index) => (
                 <tr key={`empty-${index}`} className="empty-row">
                   <td>&nbsp;</td>
-                  {Array.from({ length: 23 }).map((__, cellIndex) => (
+                  {Array.from({ length: 22 }).map((__, cellIndex) => (
                     <td key={cellIndex}>&nbsp;</td>
                   ))}
                 </tr>
               ))}
             </tbody>
-          </table>
+          </Table>
         </div>
-      </div>
+     
     </main>
   );
 }
