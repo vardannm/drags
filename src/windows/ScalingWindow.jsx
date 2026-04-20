@@ -3,7 +3,7 @@ import Form from 'react-bootstrap/Form';
 
 import { useCustomsData } from '../context/useCustomsData';
 
-function ScalingWindow() {
+function ScalingWindow({ readOnly = false }) {
   const { scalingData, setScalingData, netWeight } = useCustomsData();
 
   const update = (field, value) => {
@@ -16,6 +16,7 @@ function ScalingWindow() {
       <Form.Group>
         <Form.Label>Gross Weight (kg)</Form.Label>
         <Form.Control
+          readOnly={readOnly}
           type="number"
           value={scalingData.grossWeight}
           onChange={(e) => update('grossWeight', e.target.value)}
@@ -25,6 +26,7 @@ function ScalingWindow() {
       <Form.Group>
         <Form.Label>Tare Weight (kg)</Form.Label>
         <Form.Control
+          readOnly={readOnly}
           type="number"
           value={scalingData.tareWeight}
           onChange={(e) => update('tareWeight', e.target.value)}
@@ -34,6 +36,7 @@ function ScalingWindow() {
       <Form.Group>
         <Form.Label>Manual Net Override (kg)</Form.Label>
         <Form.Control
+          readOnly={readOnly}
           type="number"
           value={scalingData.manualNetWeight ?? ''}
           placeholder="Optional"

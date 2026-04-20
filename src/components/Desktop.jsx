@@ -8,12 +8,12 @@ import {
   ShipmentsTableWindow,
 } from '../windows/TableWindows';
 
-const desktopOneContentMap = {
-  scaling: <ScalingWindow />,
-  driver: <DriverWindow />,
-  cargo: <CargoWindow />,
-  tax: <TaxWindow />,
-};
+const desktopOneContentMap = (readOnly) => ({
+  scaling: <ScalingWindow readOnly={readOnly} />,
+  driver: <DriverWindow readOnly={readOnly} />,
+  cargo: <CargoWindow readOnly={readOnly} />,
+  tax: <TaxWindow readOnly={readOnly} />,
+});
 
 const desktopTwoContentMap = {
   scaling: <ShipmentsTableWindow />,
@@ -22,7 +22,7 @@ const desktopTwoContentMap = {
   tax: <PaymentsTableWindow />,
 };
 
-function Desktop({ manager, activeDesktop }) {
+function Desktop({ manager, activeDesktop, readOnly = false }) {
   const {
     mode,
     desktopRef,
@@ -38,7 +38,7 @@ function Desktop({ manager, activeDesktop }) {
     minimizeWindow,
     closeWindow,
   } = manager;
-  const contentMap = activeDesktop === 'desktop-2' ? desktopTwoContentMap : desktopOneContentMap;
+  const contentMap = activeDesktop === 'desktop-2' ? desktopTwoContentMap : desktopOneContentMap(readOnly);
 
   return (
     <section className="desktop-area" ref={desktopRef}>

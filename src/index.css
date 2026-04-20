@@ -611,3 +611,43 @@ body,
 .table-class {
   overflow: visible !important; 
 }
+.li-member.active-op {
+  color: white;
+  background-color: #087990;
+  padding-left: 1rem;
+}
+
+.transport-table-page {
+  padding: 16px;
+  height: calc(100% - 210px);
+  overflow: auto;
+}
+
+.table-shell h2 {
+  margin: 0;
+  font-size: 20px;
+}
+
+.row-actions {
+  display: flex;
+  gap: 8px;
+}
+
+.row-actions button {
+  width: 30px;
+  height: 30px;
+  display: grid;
+  place-items: center;
+}
+
+.transport-detail-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin: 12px;
+  padding: 10px 12px;
+  border-radius: 10px;
+  border: 1px solid var(--border-color);
+  background: color-mix(in srgb, var(--panel-bg), transparent 20%);
+}

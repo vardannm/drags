@@ -7,6 +7,7 @@ function Sidebar({
   setTheme,
   customTheme,
   setCustomTheme,
+  readOnly = false,
 }) {
   const { driverData, cargoTotals, netWeight, taxes } = useCustomsData();
 
@@ -34,7 +35,7 @@ function Sidebar({
       <div className="panel favorites-list">
         {mergedFavorites.length === 0 && <div>No saved favorites yet.</div>}
         {mergedFavorites.map((favorite) => (
-          <button key={`${favorite.source}-${favorite.id}`} onClick={() => manager.applyPayload(favorite)}>
+          <button key={`${favorite.source}-${favorite.id}`} onClick={() => manager.applyPayload(favorite)} disabled={readOnly}>
             [{favorite.source}] {favorite.name}
           </button>
         ))}
@@ -43,27 +44,28 @@ function Sidebar({
       <h3>Theme</h3>
       <div className="panel theme-panel">
         <div className="inline-grid">
-          <button className={theme === 'default' ? 'active' : ''} onClick={() => setTheme('default')}>
+          <button className={theme === 'default' ? 'active' : ''} onClick={() => setTheme('default')} disabled={readOnly}>
             Default
           </button>
-          <button className={theme === 'sunrise' ? 'active' : ''} onClick={() => setTheme('sunrise')}>
+          <button className={theme === 'sunrise' ? 'active' : ''} onClick={() => setTheme('sunrise')} disabled={readOnly}>
             Bright Sunrise
           </button>
-          <button className={theme === 'mint' ? 'active' : ''} onClick={() => setTheme('mint')}>
+          <button className={theme === 'mint' ? 'active' : ''} onClick={() => setTheme('mint')} disabled={readOnly}>
             Bright Mint
           </button>
-          <button className={theme === 'lavender' ? 'active' : ''} onClick={() => setTheme('lavender')}>
+          <button className={theme === 'lavender' ? 'active' : ''} onClick={() => setTheme('lavender')} disabled={readOnly}>
             Bright Lavender
           </button>
         </div>
 
-        <button className={theme === 'custom' ? 'active' : ''} onClick={() => setTheme('custom')}>
+        <button className={theme === 'custom' ? 'active' : ''} onClick={() => setTheme('custom')} disabled={readOnly}>
           Use Custom Theme
         </button>
 
         <label>
           Background Start
           <input
+            disabled={readOnly}
             type="color"
             value={customTheme.bgStart}
             onChange={(event) =>
@@ -74,6 +76,7 @@ function Sidebar({
         <label>
           Background Mid
           <input
+            disabled={readOnly}
             type="color"
             value={customTheme.bgMid}
             onChange={(event) =>
@@ -84,6 +87,7 @@ function Sidebar({
         <label>
           Background End
           <input
+            disabled={readOnly}
             type="color"
             value={customTheme.bgEnd}
             onChange={(event) =>
@@ -94,6 +98,7 @@ function Sidebar({
         <label>
           Panel Color
           <input
+            disabled={readOnly}
             type="color"
             value={customTheme.panel}
             onChange={(event) =>
@@ -104,6 +109,7 @@ function Sidebar({
         <label>
           Text Color
           <input
+            disabled={readOnly}
             type="color"
             value={customTheme.text}
             onChange={(event) => setCustomTheme((prev) => ({ ...prev, text: event.target.value }))}
@@ -112,6 +118,7 @@ function Sidebar({
         <label>
           Accent Color
           <input
+            disabled={readOnly}
             type="color"
             value={customTheme.accent}
             onChange={(event) =>
