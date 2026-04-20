@@ -1,0 +1,39 @@
+.bg {
+  background-color: #055160;
+}
+.custom-footer {
+  z-index: 6;
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+}
+
+.custom-footer .link:hover {
+  color: #cccccc;
+}
+.custom-footer .link {
+  color: white;
+  text-decoration: none; 
+}
+
+@media (max-width: 496px) {
+  .rights {
+    padding-left: 68px;
+  }
+}
+@media (max-width: 496px) {
+  .rights {
+    padding-left: 68px;
+  }
+}
+@media (max-width: 390px) {
+  .rights {
+    padding-left: 41px;
+  }
+}
+@media (max-width: 390px) {
+  .rights {
+    padding-left:35px;
+  }
+}
+
