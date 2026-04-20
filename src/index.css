@@ -611,3 +611,130 @@ body,
 .table-class {
   overflow: visible !important; 
 }
+.li-member.active-op {
+  color: white;
+  background-color: #087990;
+  padding-left: 1rem;
+}
+
+.transport-table-page {
+  padding: 16px;
+  height: calc(100% - 210px);
+  overflow: auto;
+}
+
+.table-shell h2 {
+  margin: 0;
+  font-size: 20px;
+}
+
+.row-actions {
+  display: flex;
+  gap: 8px;
+}
+
+.row-actions button {
+  width: 30px;
+  height: 30px;
+  display: grid;
+  place-items: center;
+}
+
+.transport-detail-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin: 12px;
+  padding: 10px 12px;
+  border-radius: 10px;
+  border: 1px solid var(--border-color);
+  background: color-mix(in srgb, var(--panel-bg), transparent 20%);
+}
+
+.top-nav-right {
+  margin-left: auto;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.top-nav-dropdown-wrap {
+  position: relative;
+}
+
+.theme-menu {
+  right: 0;
+  min-width: 190px;
+}
+
+.theme-menu button {
+  width: 100%;
+  text-align: left;
+  padding: 7px 10px;
+}
+
+.theme-menu .active-theme {
+  background: color-mix(in srgb, var(--accent-color), white 20%);
+  color: #fff;
+}
+
+.transport-rich-table {
+  min-width: 1800px;
+  font-size: 12px;
+}
+
+.transport-rich-table thead th {
+  background: #0d7f99;
+  color: #fff;
+  text-align: center;
+  vertical-align: middle;
+  white-space: nowrap;
+}
+
+.transport-rich-table tbody td {
+  text-align: center;
+  vertical-align: middle;
+  background: #d8dadd;
+}
+
+.transport-rich-table tbody tr:nth-child(even) td {
+  background: #ced1d5;
+}
+
+.transport-rich-table .row-actions {
+  justify-content: center;
+}
+
+.transport-rich-table .row-actions button,
+.image-btn {
+  width: 28px;
+  height: 28px;
+  border-radius: 6px;
+  border: 1px solid #a6afb8;
+  color: #0d7f99;
+  background: #eef2f6;
+}
+
+.risk-indicator {
+  display: inline-block;
+  width: 28px;
+  height: 28px;
+  border-radius: 5px;
+}
+
+.risk-indicator.red {
+  background: #ff1919;
+}
+
+.risk-indicator.green {
+  background: #7ed957;
+}
+
+.risk-indicator.yellow {
+  background: #ece806;
+}
+
+.transport-rich-table .empty-row td {
+  color: transparent;
+}

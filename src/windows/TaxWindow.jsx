@@ -4,7 +4,7 @@ import Form from 'react-bootstrap/Form';
 
 import { useCustomsData } from '../context/useCustomsData';
 
-function TaxWindow() {
+function TaxWindow({ readOnly = false }) {
   const { taxConfig, setTaxConfig, taxes, netWeight, cargoTotals } = useCustomsData();
   const [lastCalculatedAt, setLastCalculatedAt] = useState(null);
 
@@ -25,6 +25,7 @@ function TaxWindow() {
         <Form.Group>
           <Form.Label>Duty %</Form.Label>
           <Form.Control
+            readOnly={readOnly}
             type="number"
             value={taxConfig.dutyRate}
             onChange={(e) => update('dutyRate', e.target.value)}
@@ -32,13 +33,14 @@ function TaxWindow() {
         </Form.Group>
         <Form.Group>
           <Form.Label>VAT %</Form.Label>
-          <Form.Control type="number" value={taxConfig.vatRate} onChange={(e) => update('vatRate', e.target.value)} />
+          <Form.Control readOnly={readOnly} type="number" value={taxConfig.vatRate} onChange={(e) => update('vatRate', e.target.value)} />
         </Form.Group>
       </div>
 
       <Form.Group>
         <Form.Label>Additional Fee</Form.Label>
         <Form.Control
+          readOnly={readOnly}
           type="number"
           value={taxConfig.additionalFee}
           onChange={(e) => update('additionalFee', e.target.value)}
@@ -61,10 +63,10 @@ function TaxWindow() {
       </div>
 
       <div className="row-between">
-        <Button variant="outline-secondary" onClick={calculate}>
+        <Button variant="outline-secondary" onClick={calculate} disabled={readOnly}>
           Calculate
         </Button>
-        <Button variant="cs-blue" onClick={pay} disabled={taxConfig.paid}>
+        <Button variant="cs-blue" onClick={pay} disabled={readOnly || taxConfig.paid}>
           {taxConfig.paid ? 'Paid ✅' : 'Pay Now'}
         </Button>
       </div>
