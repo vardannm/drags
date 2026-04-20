@@ -32,7 +32,7 @@ function AppShell() {
     manager;
   const [activeDesktop, setActiveDesktop] = useState('desktop-1');
   const [theme, setTheme] = useState('default');
-  const [customTheme, setCustomTheme] = useState(initialCustomTheme);
+  const [customTheme] = useState(initialCustomTheme);
   const [currentScreen, setCurrentScreen] = useState('transport-list');
   const [selectedTransport, setSelectedTransport] = useState(null);
   const [detailMode, setDetailMode] = useState('view');
@@ -163,7 +163,14 @@ function AppShell() {
 
   return (
     <div className="app-frame" data-theme={theme} style={frameStyle}>
-      <MainLayout user={user} onLogout={logout} pageName={pageName} selectedOperation="Տրանսպորտ. միջոցներ">
+      <MainLayout
+        user={user}
+        onLogout={logout}
+        pageName={pageName}
+        selectedOperation="Տրանսպորտ. միջոցներ"
+        theme={theme}
+        setTheme={setTheme}
+      >
         {currentScreen === 'transport-list' && (
           <TransportTablePage
             onOpen={(row, nextMode) => {
@@ -193,14 +200,7 @@ function AppShell() {
             </div>
 
             <Desktop manager={manager} activeDesktop={activeDesktop} readOnly={isReadOnlyMode} />
-            <Sidebar
-              manager={manager}
-              theme={theme}
-              setTheme={setTheme}
-              customTheme={customTheme}
-              setCustomTheme={setCustomTheme}
-              readOnly={isReadOnlyMode}
-            />
+            <Sidebar manager={manager} readOnly={isReadOnlyMode} />
             <Taskbar
               manager={manager}
               activeDesktop={activeDesktop}
