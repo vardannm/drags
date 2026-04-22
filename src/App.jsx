@@ -3,13 +3,15 @@ import React, { useEffect, useMemo, useState } from 'react';
 import Desktop from './components/Desktop';
 import MainLayout from './components/MainLayout';
 import Sidebar from './components/Sidebar';
-import Taskbar from './components/Taskbar';
 import TransportTablePage from './components/TransportTablePage';
 import { CustomsDataProvider } from './context/CustomsDataContext';
 import { useCustomsData } from './context/useCustomsData';
 import { useWindowManager } from './hooks/useWindowManager';
 import { STORAGE_KEYS } from './utils/layoutUtils';
 import { getMe, loginUser } from './utils/api';
+import { TbArrowsMaximize } from "react-icons/tb";
+import { FaImage, FaScaleBalanced } from 'react-icons/fa6';
+import { Button, Table } from 'react-bootstrap';
 
 const initialCustomTheme = {
   bgStart: '#1a1027',
@@ -180,33 +182,97 @@ function AppShell() {
             }}
           />
         )}
+        <div className="driver-data-actions">
+        <Button
+            variant="cs-blue"
+            className="driver-data-action-btn"
+          >
+            Գրանցել
+          </Button>
+        <Button
+            variant="cs-blue"
+            className="driver-data-action-btn"
+          >
+            Ավարտել
+          </Button>
+        <Button
+            variant="cs-blue"
+            className="driver-data-action-btn"
+            onClick={() => setCurrentScreen('transport-list')}
+          >
+            Փակել
+          </Button>
+        <Button
+            variant="outline-cs-blue"
+            className="driver-data-action-btn"
+          >
+            Հաստատել
+          </Button>
+        <Button
+            variant="danger"
+            className="driver-data-action-btn"
+          >
+            Գնահատել ռիսկերը
+          </Button>
+          </div>
+ <Table className="mb-4 text-center  transport-rich-table" responsive size='sm'  striped bordered hover>
+            <thead>
+              <tr>
+                <th colSpan={18}>
+                Սահմանային հաշվառում
+                </th>
+              </tr>
+            </thead>
+            <tbody>
+            
+                <tr >
+                  <td>
+                    <div className="operations-col">
+                      <button className='table-button' title="Խմբագրել" onClick={() => onOpen(row, 'edit')}>
+                        <TbArrowsMaximize />
+                      </button>
+                    </div>
+                  </td>
+                  <td>{selectedTransport?.id}</td>
+                  <td>{selectedTransport?.plate}</td>
+                  <td>{selectedTransport?.type}</td> 
+                  <td>{selectedTransport?.brand}</td>
+                  <td>{selectedTransport?.vin}</td>
+                  <td>{selectedTransport?.make}</td>
+                  <td>{selectedTransport?.model}</td>
+                  <td>{selectedTransport?.color}</td>
+                  <td>{selectedTransport?.year}</td>
+                  <td>{selectedTransport?.engineNumber}</td>
+                  <td>{selectedTransport?.chassisNumber}</td>
+                  <td>{selectedTransport?.ownerName}</td>
+                  <td>{selectedTransport?.ownerNationality}</td>
+                  <td>{selectedTransport?.ownerIdNumber}</td>
+                  <td>00/00/0000</td>
+                  <td>00/00/0000</td>
+             
+                  <td>
+                    <button type="button" className="image-btn" title="Driver image">
+                      <FaImage />
+                    </button>
+                  </td>
+                </tr>
+           
 
+              
+            </tbody>
+          </Table>
+          
         {currentScreen === 'transport-detail' && (
           <>
-            <div className="transport-detail-header">
-              <button type="button" className="ghost-btn" onClick={() => setCurrentScreen('transport-list')}>
-                ← Back to list
-              </button>
-              <div>
-                Record: <strong>{selectedTransport?.id}</strong> ({selectedTransport?.plate})
-              </div>
-              <button
-                type="button"
-                className="ghost-btn"
-                onClick={() => setDetailMode((prev) => (prev === 'view' ? 'edit' : 'view'))}
-              >
-                {isReadOnlyMode ? 'Switch to edit' : 'Switch to view'}
-              </button>
-            </div>
+          
+           
+               
+              
+            
 
             <Desktop manager={manager} activeDesktop={activeDesktop} readOnly={isReadOnlyMode} />
-            <Sidebar manager={manager} readOnly={isReadOnlyMode} />
-            <Taskbar
-              manager={manager}
-              activeDesktop={activeDesktop}
-              onDesktopChange={setActiveDesktop}
-              token={token}
-            />
+            <Sidebar manager={manager} readOnly={isReadOnlyMode} activeDesktop={activeDesktop} onDesktopChange={setActiveDesktop} token={token} />
+           
           </>
         )}
       </MainLayout>
