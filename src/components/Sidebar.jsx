@@ -78,6 +78,19 @@ const [isOpen, setIsOpen] = useState(false);
     const local = manager.localFavorites.map((item) => ({ ...item, source: 'local' }));
     return [...backend, ...local];
   }, [manager.backendFavorites, manager.localFavorites]);
+  const removeFavorite = async (event, favorite) => {
+    event.stopPropagation();
+    if (favorite.source === 'backend') {
+      await manager.removeBackendFavorite(favorite.id);
+      return;
+    }
+    manager.removeLocalFavorite(favorite.id);
+  };
+
+  const clearAllFavorites = async () => {
+    manager.clearLocalFavorites();
+    await manager.clearBackendFavorites();
+  };
 const minimizedCount = windows.filter(window => window.minimized && !window.closed).length;
 const closedCount = windows.filter(window => window.closed).length;
 
@@ -187,19 +200,30 @@ const showClosedBadge = closedCount > 0 && !showMinimizedBadge;
                       )}
                       <div className="panel favorites-list">
                         {mergedFavorites.map((favorite) => (
-                          <button
+                          <div
                             key={`${favorite.source}-${favorite.id}`}
-                            onClick={() => {
-                              manager.applyPayload(favorite);
-                              setIsOpen(false);       
-                            }}
-                            disabled={readOnly}
                             className="favorite-item"
                           >
-                            [{favorite.source}] {favorite.name}
-                          </button>
+                            <button
+                              onClick={() => {
+                                manager.applyPayload(favorite);
+                                setIsOpen(false);       
+                              }}
+                              disabled={readOnly}
+                            >
+                              [{favorite.source}] {favorite.name}
+                            </button>
+                            <button onClick={(event) => removeFavorite(event, favorite)}>
+                              Delete
+                            </button>
+                          </div>
                         ))}
                       </div>
+                      {mergedFavorites.length > 0 && (
+                        <div className="add-favorite-actions">
+                          <button onClick={clearAllFavorites}>Clear All</button>
+                        </div>
+                      )}
                     </>
                   )}
                 </div>

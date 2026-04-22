@@ -54,6 +54,20 @@ export async function saveLayout(token, payload) {
   });
 }
 
+export async function deleteFavoriteLayout(token, id) {
+  return request(`/api/layouts/favorites/${id}`, {
+    token,
+    method: 'DELETE',
+  });
+}
+
+export async function deleteFavoriteLayouts(token) {
+  return request('/api/layouts/favorites', {
+    token,
+    method: 'DELETE',
+  });
+}
+
 export async function fetchCurrentState(token) {
   return request('/api/current-state', { token });
 }
