@@ -828,6 +828,11 @@ body,
   border: 1px solid #087990;
   color: #087990;
 }
+.category-button.active {
+  border: 1px solid #087990;
+  box-shadow: 4px 4px 6px 0px #0000001a inset;
+  color: #087990;
+}
 .category-icon {
   font-size: 28px;
 }

@@ -36,6 +36,8 @@ function AppShell() {
   const [theme, setTheme] = useState('default');
   const [customTheme] = useState(initialCustomTheme);
   const [currentScreen, setCurrentScreen] = useState('transport-list');
+  const [transportCategory, setTransportCategory] = useState('all');
+  const [desktopLayouts, setDesktopLayouts] = useState({});
   const [selectedTransport, setSelectedTransport] = useState(null);
   const [detailMode, setDetailMode] = useState('view');
 
@@ -94,6 +96,84 @@ function AppShell() {
     return () => clearTimeout(timeout);
   }, [token, mode, order, windows, snapshot, pushCurrentState]);
 
+
+  useEffect(() => {
+    setDesktopLayouts((prev) => {
+      const current = prev[activeDesktop] || {};
+      const nextForDesktop = {
+        mode,
+        order,
+        windows,
+      };
+
+      if (
+        current.mode === nextForDesktop.mode &&
+        current.order === nextForDesktop.order &&
+        current.windows === nextForDesktop.windows
+      ) {
+        return prev;
+      }
+
+      return {
+        ...prev,
+        [activeDesktop]: nextForDesktop,
+      };
+    });
+  }, [activeDesktop, mode, order, windows]);
+
+  useEffect(() => {
+    const desktopOne = desktopLayouts['desktop-1'];
+    if (desktopOne) return;
+
+    setDesktopLayouts((prev) => ({
+      ...prev,
+      'desktop-1': {
+        mode,
+        order,
+        windows,
+      },
+      'desktop-2': {
+        mode,
+        order,
+        windows: windows.map((windowState, index) => ({
+          ...windowState,
+          x: Math.max(16, windowState.x + 80 + index * 10),
+          y: Math.max(16, windowState.y + 30 + index * 6),
+        })),
+      },
+    }));
+  }, [desktopLayouts, mode, order, windows]);
+
+  const handleDesktopChange = (nextDesktop) => {
+    if (nextDesktop === activeDesktop) return;
+
+    const currentPayload = {
+      mode,
+      order,
+      windows,
+    };
+
+    const targetPayload = desktopLayouts[nextDesktop];
+
+    setDesktopLayouts((prev) => ({
+      ...prev,
+      [activeDesktop]: currentPayload,
+    }));
+
+    if (targetPayload) {
+      manager.applyPayload(targetPayload);
+    }
+
+    setActiveDesktop(nextDesktop);
+  };
+
+  const transportPageNames = {
+    all: 'ընդհանուր տրասպորտային միջոցներ',
+    truck: 'բեռնատար տրասպորտային միջոցներ',
+    pedestrian: 'ուղևոր',
+    passenger: 'մարդատար տրասպորտային միջոցներ',
+  };
+
   const frameStyle =
     theme === 'custom'
       ? {
@@ -109,12 +189,12 @@ function AppShell() {
   const canSubmitLogin = authForm.email.trim() && authForm.password;
 
   const pageName = useMemo(() => {
-    if (currentScreen === 'transport-list') return 'Տրանսպորտ. միջոցներ';
+    if (currentScreen === 'transport-list') return transportPageNames[transportCategory] || transportPageNames.all;
     if (!selectedTransport) return 'Տրանսպորտ. միջոցներ';
     return detailMode === 'view'
       ? `Տրանսպորտ. միջոցներ / ${selectedTransport.id} / Դիտում`
       : `Տրանսպորտ. միջոցներ / ${selectedTransport.id} / Խմբագրում`;
-  }, [currentScreen, selectedTransport, detailMode]);
+  }, [currentScreen, selectedTransport, detailMode, transportCategory]);
 
   const isReadOnlyMode = detailMode === 'view';
 
@@ -175,6 +255,8 @@ function AppShell() {
       >
         {currentScreen === 'transport-list' && (
           <TransportTablePage
+            selectedCategory={transportCategory}
+            onCategoryChange={setTransportCategory}
             onOpen={(row, nextMode) => {
               setSelectedTransport(row);
               setDetailMode(nextMode);
@@ -271,7 +353,7 @@ function AppShell() {
             
 
             <Desktop manager={manager} activeDesktop={activeDesktop} readOnly={isReadOnlyMode} />
-            <Sidebar manager={manager} readOnly={isReadOnlyMode} activeDesktop={activeDesktop} onDesktopChange={setActiveDesktop} token={token} />
+            <Sidebar manager={manager} readOnly={isReadOnlyMode} activeDesktop={activeDesktop} onDesktopChange={handleDesktopChange} token={token} />
            
           </>
         )}
