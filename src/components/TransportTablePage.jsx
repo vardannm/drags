@@ -245,14 +245,7 @@ function TransportTablePage({ onOpen }) {
                 </tr>
               ))}
 
-              {emptyRows.map((_, index) => (
-                <tr key={`empty-${index}`} className="empty-row">
-                  <td>&nbsp;</td>
-                  {Array.from({ length: 22 }).map((__, cellIndex) => (
-                    <td key={cellIndex}>&nbsp;</td>
-                  ))}
-                </tr>
-              ))}
+              
             </tbody>
           </Table>
         </div>
