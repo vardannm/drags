@@ -1007,8 +1007,18 @@ body,
   align-items: center;
   border: 1px solid #34974d;
   background-color: #3aa856;
+} 
+.delete-button{
+  border: none;
+  padding: 0.2rem;
+  background-color: white;
+  color: #ef4444;
+  width: 30px;
+  font-size: 1rem;
+  cursor: pointer;
+  border-radius: 4px;
+  box-shadow: 4px 4px 5px rgba(0, 0, 0, 0.2);
 }
-
 .add-button, .button__icon, .button__text {
   transition: all 0.3s;
 }
@@ -1062,18 +1072,29 @@ body,
 }
 
 .favorite-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 4px 8px;
+}
+
+.favorite-item > button:first-child {
+  flex: 1;
   padding: 10px 14px;
   text-align: left;
   border: none;
   background: transparent;
   cursor: pointer;
-  width: 100%;
-    color:#000;
+  color: #000;
   font-size: 14px;
 }
 
-.favorite-item:hover {
+.favorite-item > button:first-child:hover {
   background-color: #f5f5f5;
+}
+
+.favorite-item > button:last-child {
+  width: 80px;
 }
 
 .no-favorites {

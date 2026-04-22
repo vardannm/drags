@@ -8,6 +8,8 @@ import {
   STORAGE_KEYS,
 } from '../utils/layoutUtils';
 import {
+  deleteFavoriteLayout,
+  deleteFavoriteLayouts,
   fetchCurrentState,
   fetchLayouts,
   saveLayout,
@@ -310,6 +312,32 @@ export function useWindowManager(customsSnapshot, restoreCustomsSnapshot, token)
     return data;
   };
 
+  const removeLocalFavorite = useCallback((id) => {
+    const next = localFavorites.filter((item) => item.id !== id);
+    setLocalFavorites(next);
+    localStorage.setItem(STORAGE_KEYS.localFavorites, JSON.stringify(next));
+  }, [localFavorites]);
+
+  const clearLocalFavorites = useCallback(() => {
+    setLocalFavorites([]);
+    localStorage.setItem(STORAGE_KEYS.localFavorites, JSON.stringify([]));
+  }, []);
+
+  const removeBackendFavorite = useCallback(async (id) => {
+    if (!token || !id) return;
+    await deleteFavoriteLayout(token, id);
+    setBackendFavorites((prev) => prev.filter((item) => (item.id || item._id) !== id));
+  }, [token]);
+
+  const clearBackendFavorites = useCallback(async () => {
+    if (!token) {
+      setBackendFavorites([]);
+      return;
+    }
+    await deleteFavoriteLayouts(token);
+    setBackendFavorites([]);
+  }, [token]);
+
   const fetchAndApplyCurrentState = useCallback(async () => {
     if (!token) return;
     const data = await fetchCurrentState(token);
@@ -322,8 +350,6 @@ export function useWindowManager(customsSnapshot, restoreCustomsSnapshot, token)
     if (!token) return;
     await syncCurrentState(token, toStatePayload());
   }, [token, toStatePayload]);
-
-  const clearBackendFavorites = () => setBackendFavorites([]);
 
   const sortedFreeWindows = [...visibleWindows].sort((a, b) => a.z - b.z);
   const orderedGridWindows = order
@@ -354,6 +380,9 @@ export function useWindowManager(customsSnapshot, restoreCustomsSnapshot, token)
     saveLocalFavorite,
     fetchBackendFavorites,
     saveBackendFavorite,
+    removeLocalFavorite,
+    clearLocalFavorites,
+    removeBackendFavorite,
     fetchAndApplyCurrentState,
     pushCurrentState,
     clearBackendFavorites,
