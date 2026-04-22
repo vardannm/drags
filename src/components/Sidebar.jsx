@@ -13,6 +13,7 @@ import { VscNewFile } from 'react-icons/vsc';
 import { FaScaleBalanced } from 'react-icons/fa6';
 import { MdFavoriteBorder , MdKeyboardArrowDown } from "react-icons/md";
 import Form from 'react-bootstrap/Form';
+import { Button } from 'react-bootstrap';
 function Sidebar({ manager, readOnly = false , activeDesktop, onDesktopChange, token}) {
   const { mode, setMode, windows, restoreWindow } = manager;
 const [isOpen, setIsOpen] = useState(false);
@@ -213,9 +214,9 @@ const showClosedBadge = closedCount > 0 && !showMinimizedBadge;
                             >
                               [{favorite.source}] {favorite.name}
                             </button>
-                            <button onClick={(event) => removeFavorite(event, favorite)}>
+                            <Button variant="danger" onClick={(event) => removeFavorite(event, favorite)}>
                               Delete
-                            </button>
+                            </Button>
                           </div>
                         ))}
                       </div>
