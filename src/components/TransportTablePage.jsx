@@ -301,21 +301,21 @@ function TransportTablePage({ onOpen, selectedCategory = CATEGORY_KEYS.all, onCa
 
             <div className="category-sides">
               <button
-                className="category-side-button"
+                className={`category-side-button ${routeFilter === ROUTE_FILTERS.exit ? 'active' : ''}`}
                 onClick={() => setRouteFilter(ROUTE_FILTERS.exit)}
               >
                 <FiMaximize2 className="category-side-icon" />
               </button>
 
               <button
-                className="category-side-button"
+                className={`category-side-button ${routeFilter === ROUTE_FILTERS.entry ? 'active' : ''}`}
                 onClick={() => setRouteFilter(ROUTE_FILTERS.entry)}
               >
                 <FiMinimize2 className="category-side-icon" />
               </button>
 
               <button
-                className="category-side-button"
+                className={`category-side-button ${routeFilter === ROUTE_FILTERS.all ? 'active' : ''}`}
                 onClick={() => setRouteFilter(ROUTE_FILTERS.all)}
               >
                 <TbArrowsDoubleNeSw className="category-side-icon" />

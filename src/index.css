@@ -865,6 +865,12 @@ body,
   border: 0.5px solid #087990;
   color: #087990;
 }
+.category-side-button.active {
+  background: #ffffff;
+  border: 0.5px solid #087990;
+  color: #087990;
+  box-shadow: 4px 4px 6px 0px #0000001a inset;
+}
 .category-side-icon {
   transform: rotate(90deg);
   font-size: 22px;
