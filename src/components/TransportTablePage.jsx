@@ -150,6 +150,12 @@ const CATEGORY_KEYS = {
   pedestrian: 'pedestrian',
 };
 
+const ROUTE_FILTERS = {
+  all: 'all',
+  entry: 'entry',
+  exit: 'exit',
+};
+
 const tableConfigs = {
   [CATEGORY_KEYS.truck]: {
     rows: fakeTruckRows,
@@ -212,6 +218,7 @@ function RiskIndicator({ color }) {
 
 function TransportTablePage({ onOpen, selectedCategory = CATEGORY_KEYS.all, onCategoryChange }) {
   const [collapsed, setCollapsed] = useState(false);
+  const [routeFilter, setRouteFilter] = useState(ROUTE_FILTERS.all);
 
   const toggleMenu = () => {
     setCollapsed((prev) => !prev);
@@ -241,6 +248,20 @@ function TransportTablePage({ onOpen, selectedCategory = CATEGORY_KEYS.all, onCa
   const selectCategory = (category) => {
     onCategoryChange?.(category);
   };
+
+  const filteredRows = useMemo(() => {
+    if (routeFilter === ROUTE_FILTERS.all) {
+      return activeConfig.rows;
+    }
+
+    return activeConfig.rows.filter((row) => {
+      const normalizedRoute = row.route?.toLowerCase();
+      if (routeFilter === ROUTE_FILTERS.exit) {
+        return normalizedRoute === 'ելք';
+      }
+      return normalizedRoute === 'մուտք';
+    });
+  }, [activeConfig.rows, routeFilter]);
 
   return (
     <main className="transport-table-page">
@@ -279,15 +300,24 @@ function TransportTablePage({ onOpen, selectedCategory = CATEGORY_KEYS.all, onCa
             </button>
 
             <div className="category-sides">
-              <button className="category-side-button">
+              <button
+                className="category-side-button"
+                onClick={() => setRouteFilter(ROUTE_FILTERS.exit)}
+              >
                 <FiMaximize2 className="category-side-icon" />
               </button>
 
-              <button className="category-side-button">
+              <button
+                className="category-side-button"
+                onClick={() => setRouteFilter(ROUTE_FILTERS.entry)}
+              >
                 <FiMinimize2 className="category-side-icon" />
               </button>
 
-              <button className="category-side-button">
+              <button
+                className="category-side-button"
+                onClick={() => setRouteFilter(ROUTE_FILTERS.all)}
+              >
                 <TbArrowsDoubleNeSw className="category-side-icon" />
               </button>
             </div>
@@ -316,7 +346,7 @@ function TransportTablePage({ onOpen, selectedCategory = CATEGORY_KEYS.all, onCa
             </tr>
           </thead>
           <tbody>
-            {activeConfig.rows.map((row) => (
+            {filteredRows.map((row) => (
               <tr key={`${selectedCategory}-${row.id}-${row.document}`}>
                 <td>
                   <div className="operations-col">
