@@ -3,6 +3,7 @@ import Offcanvas from 'react-bootstrap/Offcanvas';
 import { RxHamburgerMenu } from 'react-icons/rx';
 import { FaCircleUser, FaPalette } from 'react-icons/fa6';
 import { CiSearch } from 'react-icons/ci';
+import { useNavigate } from 'react-router-dom';
 import '../styles/TopNav.css';
 
 const THEME_OPTIONS = [
@@ -20,6 +21,7 @@ function TopNav({
   theme = 'default',
   setTheme,
 }) {
+  const navigate = useNavigate();
   const [open, setOpen] = useState(false);
   const [themeOpen, setThemeOpen] = useState(false);
   const [show, setShow] = useState(false);
@@ -141,7 +143,16 @@ function TopNav({
             <ul className="flex p-0 mt-4 list">
               <div className="ramka">
                 <li className={`li-member ${isTransportSelected ? 'active-op' : ''}`}>
-                  <span className="link">Տրանսպորտ. միջոցներ</span>
+                  <button
+                    type="button"
+                    className="link bg-transparent border-0 p-0"
+                    onClick={() => {
+                      navigate('/transport');
+                      setShow(false);
+                    }}
+                  >
+                    Տրանսպորտ. միջոցներ
+                  </button>
                 </li>
                 <li className="li-member main-link">
                   <span className="link">Հսկողության տեսակներ</span>

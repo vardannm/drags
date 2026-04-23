@@ -1,17 +1,14 @@
 import React, { useEffect, useMemo, useState } from 'react';
 
-import Desktop from './components/Desktop';
 import MainLayout from './components/MainLayout';
-import Sidebar from './components/Sidebar';
-import TransportTablePage from './components/TransportTablePage';
+import TransportDetailScreen from './components/TransportDetailScreen';
+import TransportListScreen from './components/TransportListScreen';
 import { CustomsDataProvider } from './context/CustomsDataContext';
 import { useCustomsData } from './context/useCustomsData';
 import { useWindowManager } from './hooks/useWindowManager';
 import { STORAGE_KEYS } from './utils/layoutUtils';
 import { getMe, loginUser } from './utils/api';
-import { TbArrowsMaximize } from "react-icons/tb";
-import { FaImage, FaScaleBalanced } from 'react-icons/fa6';
-import { Button, Table } from 'react-bootstrap';
+import { BrowserRouter, Navigate, Route, Routes, useLocation } from 'react-router-dom';
 
 const initialCustomTheme = {
   bgStart: '#1a1027',
@@ -20,6 +17,13 @@ const initialCustomTheme = {
   panel: '#101b30',
   text: '#e6f0ff',
   accent: '#f43f5e',
+};
+
+const transportPageNames = {
+  all: 'Ընդհանուր տրասպորտային միջոցներ',
+  truck: 'Բեռնատար տրասպորտային միջոցներ',
+  pedestrian: 'Ուղևոր',
+  passenger: 'մարդատար տրասպորտային միջոցներ',
 };
 
 function AppShell() {
@@ -35,11 +39,9 @@ function AppShell() {
   const [activeDesktop, setActiveDesktop] = useState('desktop-1');
   const [theme, setTheme] = useState('default');
   const [customTheme] = useState(initialCustomTheme);
-  const [currentScreen, setCurrentScreen] = useState('transport-list');
   const [transportCategory, setTransportCategory] = useState('all');
   const [desktopLayouts, setDesktopLayouts] = useState({});
-  const [selectedTransport, setSelectedTransport] = useState(null);
-  const [detailMode, setDetailMode] = useState('view');
+  const location = useLocation();
 
   const login = async () => {
     setAuthMessage('');
@@ -167,13 +169,6 @@ function AppShell() {
     setActiveDesktop(nextDesktop);
   };
 
-  const transportPageNames = {
-    all: 'Ընդհանուր տրասպորտային միջոցներ',
-    truck: 'Բեռնատար տրասպորտային միջոցներ',
-    pedestrian: 'Ուղևոր',
-    passenger: 'մարդատար տրասպորտային միջոցներ',
-  };
-
   const frameStyle =
     theme === 'custom'
       ? {
@@ -189,14 +184,18 @@ function AppShell() {
   const canSubmitLogin = authForm.email.trim() && authForm.password;
 
   const pageName = useMemo(() => {
-    if (currentScreen === 'transport-list') return transportPageNames[transportCategory] || transportPageNames.all;
-    if (!selectedTransport) return 'Տրանսպորտ. միջոցներ';
-    return detailMode === 'view'
-      ? `Տրանսպորտ. միջոցներ / ${selectedTransport.id} / Դիտում`
-      : `Տրանսպորտ. միջոցներ / ${selectedTransport.id} / Խմբագրում`;
-  }, [currentScreen, selectedTransport, detailMode, transportCategory]);
-
-  const isReadOnlyMode = detailMode === 'view';
+    const detailState = location.state || {};
+    if (location.pathname === '/transport') {
+      return transportPageNames[transportCategory] || transportPageNames.all;
+    }
+    if (location.pathname === '/transport/detail') {
+      if (!detailState.transport) return 'Տրանսպորտ. միջոցներ';
+      return detailState.mode === 'view'
+        ? `Տրանսպորտ. միջոցներ / ${detailState.transport.id} / Դիտում`
+        : `Տրանսպորտ. միջոցներ / ${detailState.transport.id} / Խմբագրում`;
+    }
+    return 'Տրանսպորտ. միջոցներ';
+  }, [location.pathname, location.state, transportCategory]);
 
   if (authLoading) {
     return (
@@ -253,114 +252,29 @@ function AppShell() {
         theme={theme}
         setTheme={setTheme}
       >
-        {currentScreen === 'transport-list' && (
-          <TransportTablePage
-            selectedCategory={transportCategory}
-            onCategoryChange={setTransportCategory}
-            onOpen={(row, nextMode) => {
-              setSelectedTransport(row);
-              setDetailMode(nextMode);
-              setCurrentScreen('transport-detail');
-            }}
+        <Routes>
+          <Route
+            path="/transport"
+            element={
+              <TransportListScreen
+                transportCategory={transportCategory}
+                onCategoryChange={setTransportCategory}
+              />
+            }
           />
-        )}
-        {currentScreen === 'transport-detail' && (
-          <>
-        <div className="driver-data-actions">
-        <Button
-            variant="cs-blue"
-            className="driver-data-action-btn"
-          >
-            Գրանցել
-          </Button>
-        <Button
-            variant="cs-blue"
-            className="driver-data-action-btn"
-          >
-            Ավարտել
-          </Button>
-        <Button
-            variant="cs-blue"
-            className="driver-data-action-btn"
-            onClick={() => setCurrentScreen('transport-list')}
-          >
-            Փակել
-          </Button>
-        <Button
-            variant="outline-cs-blue"
-            className="driver-data-action-btn"
-          >
-            Հաստատել
-          </Button>
-        <Button
-            variant="danger"
-            className="driver-data-action-btn"
-          >
-            Գնահատել ռիսկերը
-          </Button>
-          </div>
- <Table className="mb-4 text-center  transport-rich-table" responsive size='sm'  striped bordered hover>
-            <thead>
-              <tr>
-                <th colSpan={18}>
-                Սահմանային հաշվառում
-                </th>
-              </tr>
-            </thead>
-            <tbody>
-            
-                <tr >
-                  <td>
-                    <div className="operations-col">
-                      <button className='table-button' title="Խմբագրել" onClick={() => onOpen(row, 'edit')}>
-                        <TbArrowsMaximize />
-                      </button>
-                    </div>
-                  </td>
-                  <td>{selectedTransport?.id}</td>
-                  <td>{selectedTransport?.plate}</td>
-                  <td>{selectedTransport?.type}</td> 
-                  <td>{selectedTransport?.brand}</td>
-                  <td>{selectedTransport?.vin}</td>
-                  <td>{selectedTransport?.make}</td>
-                  <td>{selectedTransport?.model}</td>
-                  <td>{selectedTransport?.color}</td>
-                  <td>{selectedTransport?.year}</td>
-                  <td>{selectedTransport?.engineNumber}</td>
-                  <td>{selectedTransport?.chassisNumber}</td>
-                  <td>{selectedTransport?.ownerName}</td>
-                  <td>{selectedTransport?.ownerNationality}</td>
-                  <td>{selectedTransport?.ownerIdNumber}</td>
-                  <td>00/00/0000</td>
-                  <td>00/00/0000</td>
-             
-                  <td>
-                    <button type="button" className="image-btn" title="Driver image">
-                      <FaImage />
-                    </button>
-                  </td>
-                </tr>
-           
-
-              
-            </tbody>
-          </Table>
-          </>
-        )}
-          
-        {currentScreen === 'transport-detail' && (
-          <>
-          
-           
-               
-              
-            
-
-            <Desktop manager={manager} activeDesktop={activeDesktop} readOnly={isReadOnlyMode} />
-            <Sidebar manager={manager} readOnly={isReadOnlyMode} activeDesktop={activeDesktop} onDesktopChange={handleDesktopChange} token={token} />
-           
-          </>
-        )}
+          <Route
+            path="/transport/detail"
+            element={
+              <TransportDetailScreen
+                manager={manager}
+                activeDesktop={activeDesktop}
+                onDesktopChange={handleDesktopChange}
+                token={token}
+              />
+            }
+          />
+          <Route path="*" element={<Navigate to="/transport" replace />} />
+        </Routes>
       </MainLayout>
     </div>
   );
@@ -368,8 +282,10 @@ function AppShell() {
 
 export default function App() {
   return (
-    <CustomsDataProvider>
-      <AppShell />
-    </CustomsDataProvider>
+    <BrowserRouter>
+      <CustomsDataProvider>
+        <AppShell />
+      </CustomsDataProvider>
+    </BrowserRouter>
   );
 }
