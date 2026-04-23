@@ -12,13 +12,12 @@ import { BsGearWide, BsPencil } from 'react-icons/bs';
 import { MdOutlineRemoveRedEye } from 'react-icons/md';
 
 const riskColumns = [
-  { key: 'risk_1', label: 'ԱՆԵԼ' },
+  { key: 'risk_1', label: 'ՍԻՎՀ' },
   { key: 'risk_2', label: 'ԱՀ' },
-  { key: 'risk_3', label: 'SC' },
-  { key: 'risk_4', label: 'ՍԱԵ' },
+  { key: 'risk_3', label: 'ՏՀ' },
+  { key: 'risk_4', label: 'ՏՄՀ' },
   { key: 'risk_5', label: 'ՆՏ' },
 ];
-
 const fakeTruckRows = [
   {
     id: '209SR05',
