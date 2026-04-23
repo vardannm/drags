@@ -264,6 +264,8 @@ function AppShell() {
             }}
           />
         )}
+        {currentScreen === 'transport-detail' && (
+          <>
         <div className="driver-data-actions">
         <Button
             variant="cs-blue"
@@ -343,6 +345,8 @@ function AppShell() {
               
             </tbody>
           </Table>
+          </>
+        )}
           
         {currentScreen === 'transport-detail' && (
           <>
