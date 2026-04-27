@@ -3,8 +3,9 @@ import Offcanvas from 'react-bootstrap/Offcanvas';
 import { RxHamburgerMenu } from 'react-icons/rx';
 import { FaCircleUser, FaPalette } from 'react-icons/fa6';
 import { CiSearch } from 'react-icons/ci';
+import { useNavigate } from 'react-router-dom';
 import '../styles/TopNav.css';
-
+import { useLocation } from 'react-router-dom';
 const THEME_OPTIONS = [
   { value: 'default', label: 'Default' },
   { value: 'sunrise', label: 'Bright Sunrise' },
@@ -16,10 +17,12 @@ const THEME_OPTIONS = [
 function TopNav({
   user,
   onLogout,
-  selectedOperation = 'Տրանսպորտ. միջոցներ',
+  selectedOperation = '',
   theme = 'default',
   setTheme,
 }) {
+  const location = useLocation();
+  const navigate = useNavigate();
   const [open, setOpen] = useState(false);
   const [themeOpen, setThemeOpen] = useState(false);
   const [show, setShow] = useState(false);
@@ -77,8 +80,9 @@ function TopNav({
 
   if (!user) return null;
 
-  const isTransportSelected = selectedOperation === 'Տրանսպորտ. միջոցներ';
-
+  const isTransportSelected = location.pathname === '/transport';
+  const isSecurityCameraSelected = location.pathname === '/security-cameras';
+  console.log(isSecurityCameraSelected);
   return (
     <header className="top-nav">
       <button className="offcanvas-button" onClick={handleShow}>
@@ -140,8 +144,13 @@ function TopNav({
           <div role="canvaslist" className="operation-list">
             <ul className="flex p-0 mt-4 list">
               <div className="ramka">
-                <li className={`li-member ${isTransportSelected ? 'active-op' : ''}`}>
-                  <span className="link">Տրանսպորտ. միջոցներ</span>
+                <li className={`li-member ${isTransportSelected ? 'active-op' : ''}`} onClick={() => {
+                      navigate('/transport');
+                      setShow(false);
+                    }}>
+                  
+                    Տրանսպորտ. միջոցներ
+                 
                 </li>
                 <li className="li-member main-link">
                   <span className="link">Հսկողության տեսակներ</span>
@@ -176,8 +185,11 @@ function TopNav({
                     <CiSearch size={24} />Որոնել
                   </span>
                 </li>
-                <li className="li-member main-link">
-                  <span className="link">Տեսախցիկներ</span>
+                 <li className={`li-member ${isSecurityCameraSelected ? 'active-op' : ''}`} onClick={() => {
+                      navigate('/security-cameras');
+                      setShow(false);
+                    }}>
+                  Տեսախցիկներ
                 </li>
                 <li className="li-member search">
                   <span className="link">Ստեղծել</span>
