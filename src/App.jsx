@@ -9,6 +9,7 @@ import { useWindowManager } from './hooks/useWindowManager';
 import { STORAGE_KEYS } from './utils/layoutUtils';
 import { getMe, loginUser } from './utils/api';
 import { BrowserRouter, Navigate, Route, Routes, useLocation } from 'react-router-dom';
+import SecurityCamera from './components/SecurityCamera';
 
 const initialCustomTheme = {
   bgStart: '#1a1027',
@@ -188,6 +189,9 @@ function AppShell() {
     if (location.pathname === '/transport') {
       return transportPageNames[transportCategory] || transportPageNames.all;
     }
+    if (location.pathname === '/security-cameras') {
+      return 'Տեսախցիկներ';
+    }
     if (location.pathname === '/transport/detail') {
       if (!detailState.transport) return 'Տրանսպորտ. միջոցներ';
       return detailState.mode === 'view'
@@ -273,6 +277,9 @@ function AppShell() {
               />
             }
           />
+          <Route path="/security-cameras" element={
+            <SecurityCamera />
+          } />
           <Route path="*" element={<Navigate to="/transport" replace />} />
         </Routes>
       </MainLayout>
