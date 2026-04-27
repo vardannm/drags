@@ -378,7 +378,14 @@ function SecurityCamera() {
   };
   const renderModal = () => {
     return (
-      <Modal show={showModal} onHide={handleClose} centered className="camera-modal" scrollable  >
+      <Modal
+        show={showModal}
+        backdrop="static"
+        onHide={handleClose}
+        centered
+        className="camera-modal"
+        scrollable
+      >
         <Modal.Header closeButton>
           <Modal.Title>Տեսախցիկի ստեղծում</Modal.Title>
         </Modal.Header>
@@ -425,40 +432,52 @@ function SecurityCamera() {
           </Form.Group>
           <Form.Group className="mt-3">
             <Form.Check type="checkbox" className="mt-3" label={`Ակտիվ`} />
-            <Form.Text  muted>
-              Լինի ակտիվ թե ոչ
-            </Form.Text>
+            <Form.Text muted>Լինի ակտիվ թե ոչ</Form.Text>
           </Form.Group>
           <Form.Group className="mt-3">
-            <Form.Check type="checkbox" className="mt-3" label={`Պետհամարնիշերի ճանաչում`} />
-            <Form.Text  muted>
-              Կատարելու է համարների ճանաչում թե ոչ
-            </Form.Text>
+            <Form.Check
+              type="checkbox"
+              className="mt-3"
+              label={`Պետհամարնիշերի ճանաչում`}
+            />
+            <Form.Text muted>Կատարելու է համարների ճանաչում թե ոչ</Form.Text>
           </Form.Group>
           <Form.Group className="mt-3">
-            <Form.Check type="checkbox" className="mt-3" label={`Առցանց հեռարձակում`} />
-            <Form.Text  muted>
-              Կատարելու է առցանց հեռարձակում թե ոչ
-            </Form.Text>
+            <Form.Check
+              type="checkbox"
+              className="mt-3"
+              label={`Առցանց հեռարձակում`}
+            />
+            <Form.Text muted>Կատարելու է առցանց հեռարձակում թե ոչ</Form.Text>
           </Form.Group>
           <Form.Group className="mt-3">
             <Form.Label>IP հասցե</Form.Label>
-            <Form.Control type="text" placeholder="Մուտքագրել հասցեն" autoComplete="off" />
-            <Form.Text  muted>
-              Կատարելու է առցանց հեռարձակում թե ոչ
-            </Form.Text>
+            <Form.Control
+              type="text"
+              placeholder="Մուտքագրել հասցեն"
+              autoComplete="off"
+            />
+            <Form.Text muted>Կատարելու է առցանց հեռարձակում թե ոչ</Form.Text>
           </Form.Group>
           <Form.Group className="mt-3">
             <Form.Label>Առցանց հեռարձակման հղում</Form.Label>
-            <Form.Control type="text" placeholder="Առցանց հեռարձակման հղում" autoComplete="off" />
-            <Form.Text  muted>
+            <Form.Control
+              type="text"
+              placeholder="Առցանց հեռարձակման հղում"
+              autoComplete="off"
+            />
+            <Form.Text muted>
               Կարող է լինել դատարկ կամ կարող է պարունակել մինչև 350 նիշ:
             </Form.Text>
           </Form.Group>
           <Form.Group className="mt-3">
             <Form.Label>Նկարի հարցման հղում</Form.Label>
-            <Form.Control type="text" placeholder="Նկարի հարցման հղում" autoComplete="off" />
-            <Form.Text  muted>
+            <Form.Control
+              type="text"
+              placeholder="Նկարի հարցման հղում"
+              autoComplete="off"
+            />
+            <Form.Text muted>
               Կարող է լինել դատարկ կամ կարող է պարունակել մինչև 350 նիշ:
             </Form.Text>
           </Form.Group>
