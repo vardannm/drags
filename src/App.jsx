@@ -9,7 +9,8 @@ import { useWindowManager } from './hooks/useWindowManager';
 import { STORAGE_KEYS } from './utils/layoutUtils';
 import { getMe, loginUser } from './utils/api';
 import { BrowserRouter, Navigate, Route, Routes, useLocation } from 'react-router-dom';
-import SecurityCamera from './components/SecurityCamera';
+import SecurityCameraSearch from './components/SecuirtyCamera/SecurityCameraSearch';
+import SecurityCameraCreate from './components/SecuirtyCamera/SecurityCameraCreate';
 
 const initialCustomTheme = {
   bgStart: '#1a1027',
@@ -189,8 +190,8 @@ function AppShell() {
     if (location.pathname === '/transport') {
       return transportPageNames[transportCategory] || transportPageNames.all;
     }
-    if (location.pathname === '/security-cameras') {
-      return 'Տեսախցիկներ';
+    if (location.pathname === '/security-cameras-search') {
+      return 'Տեսախցիկների որոնում';
     }
     if (location.pathname === '/transport/detail') {
       if (!detailState.transport) return 'Տրանսպորտ. միջոցներ';
@@ -277,8 +278,11 @@ function AppShell() {
               />
             }
           />
-          <Route path="/security-cameras" element={
-            <SecurityCamera />
+          <Route path="/security-cameras-search" element={
+            <SecurityCameraSearch />
+          } />
+          <Route path="/security-cameras-create" element={
+            <SecurityCameraCreate />
           } />
           <Route path="*" element={<Navigate to="/transport" replace />} />
         </Routes>

@@ -13,8 +13,8 @@ body,
   margin: 0;
   width: 100%;
   height: 100%;
-  overflow: hidden;
-  background: #070c17;
+  
+
   scrollbar-color: #6C757D transparent;
 }
 
@@ -126,7 +126,14 @@ body,
   --input-bg: rgba(255, 255, 255, 0.85);
   --accent-color: #7c3aed;
 }
-
+.main-layout {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+.main-layout > :nth-child(4) { /* Target the children prop position */
+  flex: 1;
+}
 .desktop-area {
   position: relative;
   width: 97%;
@@ -610,7 +617,34 @@ body,
 .li-member.active-op {
   color: white;
   background-color: #087990;
-  padding-left: 1rem;
+  
+}
+
+.form-card{
+  background-color: #f8f9fa;
+  border: 1px solid #CED4DA;
+  border-radius: 20px;
+  padding:30px;
+  width: 94%;
+  margin: 0 auto;
+}
+.form-card p{
+
+font-weight: 500;
+
+font-size: 20px;
+}
+.mandatory-symbol{
+  color: #DC3545;
+  padding-left: 3px;
+  
+}
+.large-check {
+  font-size: 18px; 
+}
+.form-check-input:checked {
+  background-color: #087990;
+  border-color: #087990;
 }
 
 .transport-table-page {
@@ -674,8 +708,12 @@ body,
 .transport-rich-table {
   min-width: 1800px;
   font-size: 12px;
+  
 }
 
+.transport-rich-table thead tr th:first-child {
+  border-top-left-radius: 10px;
+}
 .transport-rich-table thead th {
   background: #087990;
   color: #fff;
@@ -721,24 +759,8 @@ body,
   width: 90%;
   margin:auto;
 }
-.camera-modal .modal-body {
-  max-height: calc(80vh - 120px); /* Adjust based on your header/footer height */
-  overflow-y: auto;
-}
 
-/* Or if you want the modal to be 80% height with scroll inside */
-.camera-modal {
-  height: 80vh;
-}
 
-.camera-modal .modal-content {
-  height: 100%;
-}
-
-.camera-modal .modal-body {
-  overflow-y: auto;
-  flex: 1;
-}
 .table-button {
   border: none;
   padding: 0.2rem;
@@ -779,7 +801,7 @@ body,
 .search-actions{
   display:flex;
   justify-content: flex-end;
-  gap:20px;
+  gap:10px;
   margin-right: 3%;
 }
 

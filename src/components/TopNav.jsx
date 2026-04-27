@@ -81,8 +81,8 @@ function TopNav({
   if (!user) return null;
 
   const isTransportSelected = location.pathname === '/transport';
-  const isSecurityCameraSelected = location.pathname === '/security-cameras';
-  console.log(isSecurityCameraSelected);
+  const isSecurityCameraSearchSelected = location.pathname === '/security-cameras-search';
+  const isSecurityCameraCreateSelected = location.pathname === '/security-cameras-create';
   return (
     <header className="top-nav">
       <button className="offcanvas-button" onClick={handleShow}>
@@ -185,16 +185,19 @@ function TopNav({
                     <CiSearch size={24} />Որոնել
                   </span>
                 </li>
-                 <li className={`li-member ${isSecurityCameraSelected ? 'active-op' : ''}`} onClick={() => {
-                      navigate('/security-cameras');
-                      setShow(false);
-                    }}>
+                 <li className="li-member main-link">
                   Տեսախցիկներ
                 </li>
-                <li className="li-member search">
+                <li className={`li-member search ${isSecurityCameraCreateSelected ? 'active-op' : ''}`} onClick={() => {
+                      navigate('/security-cameras-create');
+                      setShow(false);
+                    }}>
                   <span className="link">Ստեղծել</span>
                 </li>
-                <li className="li-member search">
+                  <li className={`li-member search ${isSecurityCameraSearchSelected ? 'active-op' : ''}`} onClick={() => {
+                      navigate('/security-cameras-search');
+                      setShow(false);
+                    }}>
                   <span className="link">
                     <CiSearch size={24} /> Որոնել
                   </span>

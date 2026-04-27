@@ -13,7 +13,7 @@ import {
 import { HiOutlineDocumentSearch } from "react-icons/hi";
 import { GoPlus } from "react-icons/go";
 
-function SecurityCamera() {
+function SecurityCameraSearch() {
   const fakeData = useMemo(
     () => [
       {
@@ -342,9 +342,6 @@ function SecurityCamera() {
 
   const rowsPerPage = 12;
   const [currentPage, setCurrentPage] = useState(1);
-  const [showModal, setShowModal] = useState(false);
-  const handleClose = () => setShowModal(false);
-  const handleShow = () => setShowModal(true);
   const totalPages = Math.ceil(fakeData.length / rowsPerPage);
 
   const currentRows = fakeData.slice(
@@ -376,143 +373,29 @@ function SecurityCamera() {
 
     return pages;
   };
-  const renderModal = () => {
-    return (
-      <Modal
-        show={showModal}
-        backdrop="static"
-        onHide={handleClose}
-        centered
-        className="camera-modal"
-        scrollable
-      >
-        <Modal.Header closeButton>
-          <Modal.Title>Տեսախցիկի ստեղծում</Modal.Title>
-        </Modal.Header>
-        <Modal.Body>
-          <Form.Group>
-            <Form.Label>Մաքսային տեղամասեր</Form.Label>
-            <Form.Select>
-              <option>Ընտրել</option>
-            </Form.Select>
-          </Form.Group>
-          <Form.Group className="mt-3">
-            <Form.Label>Կշեռք</Form.Label>
-            <Form.Select>
-              <option>Ընտրել</option>
-            </Form.Select>
-          </Form.Group>
-          <Form.Group className="mt-3">
-            <Form.Label>Տեսախցիկի արտադրող</Form.Label>
-            <Form.Select>
-              <option>Ընտրել</option>
-            </Form.Select>
-          </Form.Group>
-          <Form.Group className="mt-3">
-            <Form.Label>Տեսախցիկի մոդել</Form.Label>
-            <Form.Select>
-              <option>Ընտրել</option>
-            </Form.Select>
-          </Form.Group>
-          <Form.Group className="mt-3">
-            <Form.Label>Ծածկանուն</Form.Label>
-            <Form.Control
-              type="text"
-              placeholder="Մուտքագրել մոդելը"
-              autoComplete="off"
-            />
-          </Form.Group>
-          <Form.Group className="mt-3">
-            <Form.Label>Գաղտնաբառ</Form.Label>
-            <Form.Control
-              type="password"
-              placeholder="Մուտքագրել մոդելը"
-              autoComplete="off"
-            />
-          </Form.Group>
-          <Form.Group className="mt-3">
-            <Form.Check type="checkbox" className="mt-3" label={`Ակտիվ`} />
-            <Form.Text muted>Լինի ակտիվ թե ոչ</Form.Text>
-          </Form.Group>
-          <Form.Group className="mt-3">
-            <Form.Check
-              type="checkbox"
-              className="mt-3"
-              label={`Պետհամարնիշերի ճանաչում`}
-            />
-            <Form.Text muted>Կատարելու է համարների ճանաչում թե ոչ</Form.Text>
-          </Form.Group>
-          <Form.Group className="mt-3">
-            <Form.Check
-              type="checkbox"
-              className="mt-3"
-              label={`Առցանց հեռարձակում`}
-            />
-            <Form.Text muted>Կատարելու է առցանց հեռարձակում թե ոչ</Form.Text>
-          </Form.Group>
-          <Form.Group className="mt-3">
-            <Form.Label>IP հասցե</Form.Label>
-            <Form.Control
-              type="text"
-              placeholder="Մուտքագրել հասցեն"
-              autoComplete="off"
-            />
-            <Form.Text muted>Կատարելու է առցանց հեռարձակում թե ոչ</Form.Text>
-          </Form.Group>
-          <Form.Group className="mt-3">
-            <Form.Label>Առցանց հեռարձակման հղում</Form.Label>
-            <Form.Control
-              type="text"
-              placeholder="Առցանց հեռարձակման հղում"
-              autoComplete="off"
-            />
-            <Form.Text muted>
-              Կարող է լինել դատարկ կամ կարող է պարունակել մինչև 350 նիշ:
-            </Form.Text>
-          </Form.Group>
-          <Form.Group className="mt-3">
-            <Form.Label>Նկարի հարցման հղում</Form.Label>
-            <Form.Control
-              type="text"
-              placeholder="Նկարի հարցման հղում"
-              autoComplete="off"
-            />
-            <Form.Text muted>
-              Կարող է լինել դատարկ կամ կարող է պարունակել մինչև 350 նիշ:
-            </Form.Text>
-          </Form.Group>
-        </Modal.Body>
-        <Modal.Footer>
-          <Button variant="outline-cs-blue" onClick={handleClose}>
-            Չեղարկել
-          </Button>
-          <Button variant="cs-blue" onClick={handleClose}>
-            Ստեղծել
-          </Button>
-        </Modal.Footer>
-      </Modal>
-    );
-  };
+  
   const emptyRows = rowsPerPage - currentRows.length;
+  
   return (
     <>
       <div className="security">
-        <div className="security-search">
-          <div className="search-actions">
-            <div className="search-wrapper">
-              <Form.Control
-                type="text"
-                placeholder="Արագ որոնում"
-                className="search-input pe-5"
-              />
-              <IoSearchOutline className="search-icon" />
-            </div>
-
-            <button className="plus ">
-              <HiOutlineDocumentSearch className="text-cs-blue" size={24} />
-            </button>
-          </div>
+         <div className="security-search">
+                  <div className="search-actions">
+                   
+        
+                    <Button variant="outline-cs-blue"> 
+                      Մաքրել
+                    </Button>
+                    <Button variant="cs-blue"> 
+                      Որոնել
+                    </Button>
+                  </div>
+                </div>
+                <div className="form-card mb-4">
+        <p className="header-name">Որոնել տեսախցիկ</p>
         </div>
+        <div className="form-card mb-4">
+        <p className="header-name">Գտնված տվյալներ</p>
         <Table
           className="mb-4 text-center transport-rich-table margin-90"
           responsive
@@ -636,14 +519,12 @@ function SecurityCamera() {
               </Button>
             )}
           </div>
-          <button className="add-camera-button" onClick={handleShow}>
-            <GoPlus size={18} /> Տեսախցիկի ստեղծում
-          </button>
-          {renderModal()}
+          </div>
+          
         </div>
       </div>
     </>
   );
 }
 
-export default SecurityCamera;
+export default SecurityCameraSearch;

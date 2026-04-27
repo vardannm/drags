@@ -7,7 +7,7 @@ import UpperBar from './UpperBar';
 
 function MainLayout({ user, onLogout, pageName, selectedOperation, theme, setTheme, children }) {
   return (
-    <>
+    <div className='main-layout'>
       <UpperBar />
       <TopNav
         user={user}
@@ -19,7 +19,7 @@ function MainLayout({ user, onLogout, pageName, selectedOperation, theme, setThe
       <PageName title={pageName} />
       {children}
       <Footer />
-    </>
+    </div>
   );
 }
 

@@ -3,9 +3,7 @@
 }
 .custom-footer {
   z-index: 6;
-  position: absolute;
-  bottom: 0;
-  width: 100%;
+  
 }
 
 .custom-footer .link:hover {
