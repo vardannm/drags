@@ -1,7 +1,27 @@
-import { Button , Row , Form , Col } from "react-bootstrap"
+import { Button, Row, Form, Col, Card } from "react-bootstrap"
 import MultiSelect from "../MultiSelect"
 
 function ScheduleCreate() {
+  const now = new Date()
+  const currentYear = now.getFullYear()
+  const currentMonth = now.getMonth()
+
+  const weekdays = ["Երկուշաբթի", "Երեքշաբթի", "Չորեքշաբթի", "Հինգշաբթի", "Ուրբաթ", "Շաբաթ", "Կիրակի"]
+  const monthLabel = now.toLocaleDateString("hy-AM", { month: "long", year: "numeric" })
+
+  const jsDayOfWeek = new Date(currentYear, currentMonth, 1).getDay()
+  const mondayFirstStart = jsDayOfWeek === 0 ? 6 : jsDayOfWeek - 1
+  const daysInMonth = new Date(currentYear, currentMonth + 1, 0).getDate()
+
+  const dayCells = Array.from({ length: mondayFirstStart }, () => null)
+  for (let day = 1; day <= daysInMonth; day += 1) {
+    dayCells.push(day)
+  }
+
+  while (dayCells.length % 7 !== 0) {
+    dayCells.push(null)
+  }
+
   return (
     <div>
         <div className="page-card">
@@ -73,7 +93,40 @@ function ScheduleCreate() {
         </div>
         <div className="form-card my-4">
             <p className="header-name">Օրացույց</p>
-            </div>
+            <h5 className="mb-3">{monthLabel}</h5>
+
+            <Row className="g-2 mb-2">
+              {weekdays.map((weekday) => (
+                <Col key={weekday}>
+                  <Card bg="info" text="white" className="text-center py-2">
+                    <small>{weekday}</small>
+                  </Card>
+                </Col>
+              ))}
+            </Row>
+
+            {Array.from({ length: dayCells.length / 7 }).map((_, rowIdx) => (
+              <Row className="g-2 mb-2" key={rowIdx}>
+                {dayCells.slice(rowIdx * 7, rowIdx * 7 + 7).map((day, colIdx) => (
+                  <Col key={`${rowIdx}-${colIdx}`}>
+                    <Card className="h-100">
+                      <Card.Body className="p-2" style={{ minHeight: "120px" }}>
+                        {day && (
+                          <div>
+                            <Card.Title as="h6" className="mb-2">
+                              {day}
+                            </Card.Title>
+                            <Card.Text className="small text-muted mb-1">09:00</Card.Text>
+                            <Card.Text className="small text-muted mb-0">22:00</Card.Text>
+                          </div>
+                        )}
+                      </Card.Body>
+                    </Card>
+                  </Col>
+                ))}
+              </Row>
+            ))}
+        </div>
     </div>
   )
 }
