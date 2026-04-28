@@ -85,6 +85,7 @@ function TopNav({
   const isSecurityCameraCreateSelected = location.pathname === '/security-cameras-create';
   const isControlTypeCreateSelected = location.pathname === '/control-type-create';
   const isControlTypeSearchSelected = location.pathname === '/control-type-search';
+  const isScheduleCreateSelected = location.pathname === '/schedule-create';
   return (
     <header className="top-nav">
       <button className="offcanvas-button" onClick={handleShow}>
@@ -174,7 +175,10 @@ function TopNav({
                 <li className="li-member main-link">
                   <span className="link">Գրաֆիկ</span>
                 </li>
-                <li className="li-member search">
+                <li className={`li-member search ${isControlTypeSearchSelected ? 'active-sub' : ''}`} onClick={() => {
+                      navigate('/schedule-create');
+                      setShow(false);
+                    }}>
                   <span className="link">Ստեղծել</span>
                 </li>
                 <li className="li-member search">

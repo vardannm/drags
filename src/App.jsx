@@ -13,6 +13,7 @@ import SecurityCameraSearch from './components/SecuirtyCamera/SecurityCameraSear
 import SecurityCameraCreate from './components/SecuirtyCamera/SecurityCameraCreate';
 import ControlTypeCreate from './components/ControlType/ControlTypeCreate';
 import ControlTypeSearch from './components/ControlType/ControlTypeSearch';
+import ScheduleCreate from './components/Schedule/ScheduleCreate';
 
 const initialCustomTheme = {
   bgStart: '#1a1027',
@@ -204,6 +205,9 @@ function AppShell() {
     if(location.pathname === '/control-type-search'){
       return 'Հսկողության տեսակի որոնում'
     }
+    if(location.pathname === '/schedule-create'){
+      return 'Գրաֆիկ'
+    }
     if (location.pathname === '/transport/detail') {
       if (!detailState.transport) return 'Տրանսպորտ. միջոցներ';
       return detailState.mode === 'view'
@@ -300,6 +304,9 @@ function AppShell() {
           } />
           <Route path="/control-type-search" element={
             <ControlTypeSearch />
+          } />
+          <Route path="/schedule-create" element={
+            <ScheduleCreate />
           } />
           <Route path="*" element={<Navigate to="/transport" replace />} />
         </Routes>
