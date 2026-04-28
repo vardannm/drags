@@ -8,6 +8,20 @@ import { useNavigate } from "react-router-dom";
 
 function ControlTypeSearch() {
   const navigate = useNavigate();
+  const initialFilters = {
+    code: "",
+    descriptionAm: "",
+    descriptionRu: "",
+    descriptionEn: "",
+    zone: "",
+    dateFrom: "",
+    dateTo: "",
+    extra: "",
+    position: "",
+    direction: "",
+    type: "",
+  };
+  const [filters, setFilters] = useState(initialFilters);
   const fakeData = useMemo(
     () => [
       {
@@ -226,10 +240,21 @@ function ControlTypeSearch() {
     setCurrentPage(page);
   };
 
+  const handleFilterChange = (fieldName) => (event) => {
+    setFilters((prev) => ({
+      ...prev,
+      [fieldName]: event.target.value,
+    }));
+  };
+
   const openControlTypeDetails = (item, readOnly) => {
     navigate("/control-type-create", {
       state: { controlType: item, readOnly },
     });
+  };
+
+  const handleClearFilters = () => {
+    setFilters(initialFilters);
   };
 
   const renderPageNumbers = () => {
@@ -257,9 +282,11 @@ function ControlTypeSearch() {
   const emptyRows = rowsPerPage - currentRows.length;
   return (
     <div>
-      <div className="page-card">
+        <div className="page-card">
         <div className="page-actions">
-          <Button variant="outline-cs-blue">Մաքրել</Button>
+          <Button variant="outline-cs-blue" onClick={handleClearFilters}>
+            Մաքրել
+          </Button>
           <Button variant="cs-blue">Որոնել</Button>
         </div>
       </div>
@@ -267,73 +294,85 @@ function ControlTypeSearch() {
         <p className="header-name">Որոնել հսկողության տեսակ</p>
         <Row className="mt-2">
           <Col md={3}>
-            <Form.Group>
+              <Form.Group>
               <Form.Label>Ծածկագիր</Form.Label>
-              <Form.Control type="text" />
+              <Form.Control type="text" value={filters.code} onChange={handleFilterChange("code")} />
             </Form.Group>
           </Col>
           <Col md={3}>
             <Form.Group>
               <Form.Label>Նկարագրություն (հայ.)</Form.Label>
-              <Form.Control type="text" />
+              <Form.Control
+                type="text"
+                value={filters.descriptionAm}
+                onChange={handleFilterChange("descriptionAm")}
+              />
             </Form.Group>
           </Col>
           <Col md={3}>
             <Form.Group>
               <Form.Label>Նկարագրություն (ռուս.)</Form.Label>
-              <Form.Control type="text" />
+              <Form.Control
+                type="text"
+                value={filters.descriptionRu}
+                onChange={handleFilterChange("descriptionRu")}
+              />
             </Form.Group>
           </Col>
           <Col md={3}>
             <Form.Group>
               <Form.Label>Նկարագրություն (անգլ.)</Form.Label>
-              <Form.Control type="text" />
+              <Form.Control
+                type="text"
+                value={filters.descriptionEn}
+                onChange={handleFilterChange("descriptionEn")}
+              />
             </Form.Group>
           </Col>
         </Row>
         <Row className="mt-2">
           <Col md={3}>
-            <Form.Group>
+              <Form.Group>
               <Form.Label>Մաքսային հսկողության տարածք</Form.Label>
-              <Form.Control type="text" />
+              <Form.Control type="text" value={filters.zone} onChange={handleFilterChange("zone")} />
             </Form.Group>
           </Col>
           <Col md={3}>
             <Form.Group>
               <Form.Label>Ամսաթիվ</Form.Label>
-              <Form.Control type="text" />
+              <Form.Control type="text" value={filters.dateFrom} onChange={handleFilterChange("dateFrom")} />
             </Form.Group>
           </Col>
           <Col md={3}>
             <Form.Group>
               <Form.Label></Form.Label>
-              <Form.Control type="text" />
+              <Form.Control type="text" value={filters.dateTo} onChange={handleFilterChange("dateTo")} />
             </Form.Group>
           </Col>
           <Col md={3}>
             <Form.Group>
               <Form.Label></Form.Label>
-              <Form.Control type="text" />
+              <Form.Control type="text" value={filters.extra} onChange={handleFilterChange("extra")} />
             </Form.Group>
           </Col>
         </Row>
         <Row className="mt-2">
           <Col md={3}>
-            <Form.Group>
+              <Form.Group>
               <Form.Label>Պաշտոն</Form.Label>
-              <Form.Control type="text" />
+              <Form.Control type="text" value={filters.position} onChange={handleFilterChange("position")} />
             </Form.Group>
           </Col>
           <Col md={3}>
             <Form.Group>
               <Form.Label>Ուղղություն</Form.Label>
-              <Form.Control type="text" />
+              <Form.Control type="text" value={filters.direction} onChange={handleFilterChange("direction")} />
             </Form.Group>
           </Col>
           <Col md={3}>
             <Form.Group>
               <Form.Label>Տեսակ</Form.Label>
-              <Form.Select required defaultValue="">
+              <Form.Select required value={filters.type} onChange={handleFilterChange("type")}>
                 <option value="" disabled>
                   Ընտրել
                 </option>
