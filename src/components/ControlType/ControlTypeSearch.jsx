@@ -4,8 +4,10 @@ import { BsChevronDoubleRight, BsChevronRight, BsGearWide, BsPencil } from "reac
 import { IoTrashOutline } from "react-icons/io5";
 import { MdOutlineRemoveRedEye } from "react-icons/md";
 import { useMemo, useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 function ControlTypeSearch() {
+  const navigate = useNavigate();
   const fakeData = useMemo(
     () => [
       {
@@ -224,6 +226,12 @@ function ControlTypeSearch() {
     setCurrentPage(page);
   };
 
+  const openControlTypeDetails = (item, readOnly) => {
+    navigate("/control-type-create", {
+      state: { controlType: item, readOnly },
+    });
+  };
+
   const renderPageNumbers = () => {
     const pages = [];
 
@@ -364,10 +372,18 @@ function ControlTypeSearch() {
               <tr key={item.id}>
                 <td>
                   <div className="table-actions">
-                    <button className="table-button" title="Դիտել">
+                    <button
+                      className="table-button"
+                      title="Դիտել"
+                      onClick={() => openControlTypeDetails(item, true)}
+                    >
                       <MdOutlineRemoveRedEye />
                     </button>
-                    <button className="table-button" title="Խմբագրել">
+                    <button
+                      className="table-button"
+                      title="Խմբագրել"
+                      onClick={() => openControlTypeDetails(item, false)}
+                    >
                       <BsPencil />
                     </button>
                   </div>

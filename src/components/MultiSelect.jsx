@@ -8,6 +8,7 @@ export default function MultiSelect({
   value = [],
   onChange,
   placeholder = "Select options",
+  disabled = false,
 }) {
   const [open, setOpen] = useState(false);
   const [localOptions, setLocalOptions] = useState(options);
@@ -66,12 +67,17 @@ const handleRemoveOption = (optionValue) => {
     <Dropdown
       className="custom-multiselect"
       show={open}
-      onToggle={(isOpen) => setOpen(isOpen)}
+      onToggle={(isOpen) => {
+        if (!disabled) {
+          setOpen(isOpen);
+        }
+      }}
       autoClose="outside"
     >
       <Dropdown.Toggle
         as="div"
         className="custom-multiselect-toggle form-control d-flex justify-content-between align-items-center"
+        style={{ pointerEvents: disabled ? "none" : "auto", opacity: disabled ? 0.7 : 1 }}
       >
         <span
           className={`text-truncate ${
@@ -93,6 +99,7 @@ const handleRemoveOption = (optionValue) => {
           <Form.Control
             value={newOption}
             placeholder="Add new option"
+            disabled={disabled}
             onChange={(e) => setNewOption(e.target.value)}
             onKeyDown={(e) => {
               e.stopPropagation();
@@ -107,7 +114,7 @@ const handleRemoveOption = (optionValue) => {
           <Button
             variant="outline-secondary"
             onClick={handleAddOption}
-            disabled={!newOption.trim()}
+            disabled={disabled || !newOption.trim()}
           >
             Add
           </Button>
@@ -119,11 +126,12 @@ const handleRemoveOption = (optionValue) => {
           checked={
             localOptions.length > 0 && value.length === localOptions.length
           }
+          disabled={disabled}
           onChange={handleSelectAll}
           className="mb-2"
         />
 
-        <Dropdown.Divider />
+      <Dropdown.Divider />
 
        {localOptions.map((option) => (
   <div
@@ -134,6 +142,7 @@ const handleRemoveOption = (optionValue) => {
       type="checkbox"
       label={option.label}
       checked={value.includes(option.value)}
+      disabled={disabled}
       onChange={() => handleToggleOption(option.value)}
     />
 
@@ -146,6 +155,7 @@ const handleRemoveOption = (optionValue) => {
           e.stopPropagation();
           handleRemoveOption(option.value);
         }}
+        disabled={disabled}
       >
         <IoTrashOutline />
       </Button>
