@@ -10,9 +10,11 @@ import {
   BsChevronDoubleLeft,
   BsChevronDoubleRight,
 } from "react-icons/bs";
+import { useNavigate } from "react-router-dom";
 
 
 function SecurityCameraSearch() {
+  const navigate = useNavigate();
   const fakeData = useMemo(
     () => [
       {
@@ -351,6 +353,12 @@ function SecurityCameraSearch() {
     setCurrentPage(page);
   };
 
+  const openSecurityCameraDetails = (item, readOnly) => {
+    navigate("/security-cameras-create", {
+      state: { securityCamera: item, readOnly },
+    });
+  };
+
   const renderPageNumbers = () => {
     const pages = [];
 
@@ -431,10 +439,18 @@ function SecurityCameraSearch() {
               <tr key={item.id}>
                 <td>
                   <div className="operations-col">
-                    <button className="table-button" title="Դիտել">
+                    <button
+                      className="table-button"
+                      title="Դիտել"
+                      onClick={() => openSecurityCameraDetails(item, true)}
+                    >
                       <MdOutlineRemoveRedEye />
                     </button>
-                    <button className="table-button" title="Խմբագրել">
+                    <button
+                      className="table-button"
+                      title="Խմբագրել"
+                      onClick={() => openSecurityCameraDetails(item, false)}
+                    >
                       <BsPencil />
                     </button>
                     <button
