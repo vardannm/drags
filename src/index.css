@@ -614,11 +614,7 @@ body,
 .table-class {
   overflow: visible !important; 
 }
-.li-member.active-op {
-  color: white;
-  background-color: #087990;
-  
-}
+
 
 .form-card{
   background-color: #f8f9fa;
@@ -706,13 +702,17 @@ font-size: 20px;
 
 
 .transport-rich-table {
-  min-width: 1800px;
+  min-width:100%;
   font-size: 12px;
   
 }
 
 .transport-rich-table thead tr th:first-child {
   border-top-left-radius: 10px;
+  width: 6%;
+}
+.transport-rich-table thead tr th:last-child {
+  border-top-right-radius: 10px;
 }
 .transport-rich-table thead th {
   background: #087990;
@@ -763,14 +763,14 @@ font-size: 20px;
 
 .table-button {
   border: none;
-  padding: 0.2rem;
+  padding: ;
   background-color: white;
   color: #087990;
   font-size: 1rem;
   cursor: pointer;
   border-radius: 4px;
   box-shadow: 4px 4px 5px rgba(0, 0, 0, 0.2);
-  margin-right: 1rem;
+  
 }
 .table-button-remove{
     border: none;
@@ -783,11 +783,16 @@ font-size: 20px;
   box-shadow: 4px 4px 5px rgba(0, 0, 0, 0.2);
   margin-right: 1rem;
 }
+.table-actions{
+  display: flex;
+  gap: 10px;
+ justify-content: center; 
+}
 .pagination-margin{
   margin-left:5%;
 }
 
-.security-search{
+.page-card{
   border-top: 1px solid #F8F9FA;
   box-shadow: 0px 4px 10px 0px #0000001A;
   margin-bottom:20px;
@@ -798,7 +803,30 @@ font-size: 20px;
   position: relative;
    
 }
-.search-actions{
+.custom-multiselect .dropdown-toggle::after {
+  display: none !important;
+}
+.custom-multiselect-toggle {
+  cursor: pointer;
+  background-color: #fff !important;
+  border: 1px solid #ced4da !important;
+  min-height: 31px; /* match size="sm" */
+  padding: 0.25rem 0.5rem;
+  font-size: 0.875rem;
+}
+
+/* remove bootstrap arrow */
+.custom-multiselect .dropdown-toggle::after {
+  display: none !important;
+}
+
+/* focus like input */
+.custom-multiselect-toggle:focus,
+.custom-multiselect.show .custom-multiselect-toggle {
+  border-color: #86b7fe;
+  box-shadow: 0 0 0 0.2rem rgba(13,110,253,.25);
+}
+.page-actions{
   display:flex;
   justify-content: flex-end;
   gap:10px;
@@ -879,6 +907,29 @@ font-size: 20px;
     }
     
     .plus:active {
+      box-shadow: inset 4px 4px 4px rgba(0, 0, 0, 0.2);
+      
+    }
+.plus-multiselect{
+    border: none;
+    padding: 0.2rem;
+    background-color: white;
+    color: #087990;
+    font-size: 1rem;
+    cursor: pointer;
+    border-radius: 4px;
+    box-shadow: 3px 3px 3px 0px #0000001A;  
+    display: flex;
+    align-items: center;
+    justify-content: center;
+      
+    }
+    .plus-multiselect:hover {
+      box-shadow: none;
+      transition: 0.5s;
+    }
+    
+    .plus-multiselect:active {
       box-shadow: inset 4px 4px 4px rgba(0, 0, 0, 0.2);
       
     }

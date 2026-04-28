@@ -1,50 +1,68 @@
-import { Form, Row , Col, Button} from "react-bootstrap"
+import { useState } from "react"
+import { Form, Row, Col, Button } from "react-bootstrap"
 
 function SecurityCameraCreate() {
+  const [validated, setValidated] = useState(false)
+
+  const handleSubmit = (event) => {
+    const form = event.currentTarget
+    event.preventDefault()
+    event.stopPropagation()
+
+    if (form.checkValidity()) {
+      // TODO: connect submit API call here once endpoint is ready.
+    }
+
+    setValidated(true)
+  }
+
   return (
     <div>
-         <div className="security-search">
-                  <div className="search-actions">
-                   
-        
-                    <Button variant="cs-blue"> 
-                      Ավելացնել
-                    </Button>
-                  </div>
-                </div>
-    <div className="form-card">
+      <Form noValidate validated={validated} onSubmit={handleSubmit}>
+        <div className="page-card">
+          <div className="page-actions">
+            <Button variant="cs-blue" type="submit">
+              Ավելացնել
+            </Button>
+          </div>
+        </div>
+        <div className="form-card">
         <p className="header-name">Ստեղծել սեսախցիկ</p>
         <Row>
             <Col md={3}>
          <Form.Group>
                     <Form.Label>Մաքսային տեղամասեր<span className="mandatory-symbol">*</span></Form.Label>
-                    <Form.Select>
-                      <option>Ընտրել</option>
+                    <Form.Select required defaultValue="">
+                      <option value="" disabled>Ընտրել</option>
                     </Form.Select>
+                    <Form.Control.Feedback type="invalid">Պարտադիր դաշտ է</Form.Control.Feedback>
                   </Form.Group>
                      </Col>
                      <Col md={3}>
                   <Form.Group>
                     <Form.Label>Կշեռք <span className="mandatory-symbol">*</span></Form.Label>
-                    <Form.Select>
-                      <option>Ընտրել</option>
+                    <Form.Select required defaultValue="">
+                      <option value="" disabled>Ընտրել</option>
                     </Form.Select>
+                    <Form.Control.Feedback type="invalid">Պարտադիր դաշտ է</Form.Control.Feedback>
                   </Form.Group>
                   </Col>
                     <Col md={3}>
                   <Form.Group>
                     <Form.Label>Տեսախցիկի արտադրող <span className="mandatory-symbol">*</span></Form.Label>
-                    <Form.Select>
-                      <option>Ընտրել</option>
+                    <Form.Select required defaultValue="">
+                      <option value="" disabled>Ընտրել</option>
                     </Form.Select>
+                    <Form.Control.Feedback type="invalid">Պարտադիր դաշտ է</Form.Control.Feedback>
                   </Form.Group>
                     </Col>
                         <Col md={3}>
                   <Form.Group>
                     <Form.Label>Տեսախցիկի մոդել <span className="mandatory-symbol">*</span></Form.Label>
-                    <Form.Select>
-                      <option>Ընտրել</option>
+                    <Form.Select required defaultValue="">
+                      <option value="" disabled>Ընտրել</option>
                     </Form.Select>
+                    <Form.Control.Feedback type="invalid">Պարտադիր դաշտ է</Form.Control.Feedback>
                   </Form.Group>
                     </Col>
                   </Row>
@@ -100,7 +118,9 @@ function SecurityCameraCreate() {
                       type="text"
                       placeholder="Մուտքագրել հասցեն"
                       autoComplete="off"
+                      required
                     />
+                    <Form.Control.Feedback type="invalid">Պարտադիր դաշտ է</Form.Control.Feedback>
                     <Form.Text muted>Կատարելու է առցանց հեռարձակում թե ոչ</Form.Text>
                   </Form.Group>
                     </Col>
@@ -132,6 +152,7 @@ function SecurityCameraCreate() {
                     </Col>
                     </Row>
     </div>
+    </Form>
     </div>
   )
 }

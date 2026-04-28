@@ -83,6 +83,8 @@ function TopNav({
   const isTransportSelected = location.pathname === '/transport';
   const isSecurityCameraSearchSelected = location.pathname === '/security-cameras-search';
   const isSecurityCameraCreateSelected = location.pathname === '/security-cameras-create';
+  const isControlTypeCreateSelected = location.pathname === '/control-type-create';
+  const isControlTypeSearchSelected = location.pathname === '/control-type-search';
   return (
     <header className="top-nav">
       <button className="offcanvas-button" onClick={handleShow}>
@@ -152,13 +154,19 @@ function TopNav({
                     Տրանսպորտ. միջոցներ
                  
                 </li>
-                <li className="li-member main-link">
+                <li className={`li-member main-link ${isControlTypeCreateSelected || isControlTypeSearchSelected ? 'active-op' : ''}`}>
                   <span className="link">Հսկողության տեսակներ</span>
                 </li>
-                <li className="li-member search">
+                <li className={`li-member search ${isControlTypeCreateSelected ? 'active-sub' : ''}`} onClick={() => {
+                      navigate('/control-type-create');
+                      setShow(false);
+                    }}>
                   <span className="link">Ստեղծել</span>
                 </li>
-                <li className="li-member search">
+                <li className={`li-member search ${isControlTypeSearchSelected ? 'active-sub' : ''}`} onClick={() => {
+                      navigate('/control-type-search');
+                      setShow(false);
+                    }}>
                   <span className="link">
                     <CiSearch size={24} /> Որոնել
                   </span>
@@ -185,16 +193,16 @@ function TopNav({
                     <CiSearch size={24} />Որոնել
                   </span>
                 </li>
-                 <li className="li-member main-link">
+                 <li className={`li-member main-link ${isSecurityCameraCreateSelected || isSecurityCameraSearchSelected ? 'active-op' : ''}`}>
                   Տեսախցիկներ
                 </li>
-                <li className={`li-member search ${isSecurityCameraCreateSelected ? 'active-op' : ''}`} onClick={() => {
+                <li className={`li-member search ${isSecurityCameraCreateSelected ? 'active-sub' : ''}`} onClick={() => {
                       navigate('/security-cameras-create');
                       setShow(false);
                     }}>
                   <span className="link">Ստեղծել</span>
                 </li>
-                  <li className={`li-member search ${isSecurityCameraSearchSelected ? 'active-op' : ''}`} onClick={() => {
+                  <li className={`li-member search ${isSecurityCameraSearchSelected ? 'active-sub' : ''}`} onClick={() => {
                       navigate('/security-cameras-search');
                       setShow(false);
                     }}>

@@ -11,6 +11,8 @@ import { getMe, loginUser } from './utils/api';
 import { BrowserRouter, Navigate, Route, Routes, useLocation } from 'react-router-dom';
 import SecurityCameraSearch from './components/SecuirtyCamera/SecurityCameraSearch';
 import SecurityCameraCreate from './components/SecuirtyCamera/SecurityCameraCreate';
+import ControlTypeCreate from './components/ControlType/ControlTypeCreate';
+import ControlTypeSearch from './components/ControlType/ControlTypeSearch';
 
 const initialCustomTheme = {
   bgStart: '#1a1027',
@@ -193,6 +195,15 @@ function AppShell() {
     if (location.pathname === '/security-cameras-search') {
       return 'Տեսախցիկների որոնում';
     }
+    if(location.pathname === '/security-cameras-create'){
+      return 'Տեսախցիկի ստեղծում'
+    }
+    if(location.pathname === '/control-type-create'){
+      return 'Հսկողության տեսակի ստեղծում'
+    }
+    if(location.pathname === '/control-type-search'){
+      return 'Հսկողության տեսակի որոնում'
+    }
     if (location.pathname === '/transport/detail') {
       if (!detailState.transport) return 'Տրանսպորտ. միջոցներ';
       return detailState.mode === 'view'
@@ -283,6 +294,12 @@ function AppShell() {
           } />
           <Route path="/security-cameras-create" element={
             <SecurityCameraCreate />
+          } />
+          <Route path="/control-type-create" element={
+            <ControlTypeCreate />
+          } />
+          <Route path="/control-type-search" element={
+            <ControlTypeSearch />
           } />
           <Route path="*" element={<Navigate to="/transport" replace />} />
         </Routes>
