@@ -3,24 +3,25 @@ import MultiSelect from "../MultiSelect"
 
 function ScheduleCreate() {
   const now = new Date()
-  const currentYear = now.getFullYear()
-  const currentMonth = now.getMonth()
-
   const weekdays = ["Երկուշաբթի", "Երեքշաբթի", "Չորեքշաբթի", "Հինգշաբթի", "Ուրբաթ", "Շաբաթ", "Կիրակի"]
-  const monthLabel = now.toLocaleDateString("hy-AM", { month: "long", year: "numeric" })
+  const months = Array.from({ length: 12 }, (_, index) => {
+    const monthDate = new Date(now.getFullYear(), now.getMonth() + index, 1)
+    const monthLabel = monthDate.toLocaleDateString("hy-AM", { month: "long", year: "numeric" })
+    const jsDayOfWeek = monthDate.getDay()
+    const mondayFirstStart = jsDayOfWeek === 0 ? 6 : jsDayOfWeek - 1
+    const daysInMonth = new Date(monthDate.getFullYear(), monthDate.getMonth() + 1, 0).getDate()
 
-  const jsDayOfWeek = new Date(currentYear, currentMonth, 1).getDay()
-  const mondayFirstStart = jsDayOfWeek === 0 ? 6 : jsDayOfWeek - 1
-  const daysInMonth = new Date(currentYear, currentMonth + 1, 0).getDate()
+    const dayCells = Array.from({ length: mondayFirstStart }, () => null)
+    for (let day = 1; day <= daysInMonth; day += 1) {
+      dayCells.push(day)
+    }
 
-  const dayCells = Array.from({ length: mondayFirstStart }, () => null)
-  for (let day = 1; day <= daysInMonth; day += 1) {
-    dayCells.push(day)
-  }
+    while (dayCells.length % 7 !== 0) {
+      dayCells.push(null)
+    }
 
-  while (dayCells.length % 7 !== 0) {
-    dayCells.push(null)
-  }
+    return { monthLabel, dayCells, key: `${monthDate.getFullYear()}-${monthDate.getMonth()}` }
+  })
 
   return (
     <div>
@@ -93,39 +94,51 @@ function ScheduleCreate() {
         </div>
         <div className="form-card my-4">
             <p className="header-name">Օրացույց</p>
-            <h5 className="mb-3">{monthLabel}</h5>
+            <div className="d-flex gap-3 overflow-auto pb-2" style={{ scrollSnapType: "x mandatory" }}>
+              {months.map(({ monthLabel, dayCells, key }) => (
+                <Card
+                  key={key}
+                  className="flex-shrink-0"
+                  style={{ minWidth: "1100px", scrollSnapAlign: "start" }}
+                >
+                  <Card.Body>
+                    <h5 className="mb-3">{monthLabel}</h5>
 
-            <Row className="g-2 mb-2">
-              {weekdays.map((weekday) => (
-                <Col key={weekday}>
-                  <Card bg="info" text="white" className="text-center py-2">
-                    <small>{weekday}</small>
-                  </Card>
-                </Col>
+                    <Row className="g-2 mb-2">
+                      {weekdays.map((weekday) => (
+                        <Col key={`${key}-${weekday}`}>
+                          <Card bg="info" text="white" className="text-center py-2">
+                            <small>{weekday}</small>
+                          </Card>
+                        </Col>
+                      ))}
+                    </Row>
+
+                    {Array.from({ length: dayCells.length / 7 }).map((_, rowIdx) => (
+                      <Row className="g-2 mb-2" key={`${key}-${rowIdx}`}>
+                        {dayCells.slice(rowIdx * 7, rowIdx * 7 + 7).map((day, colIdx) => (
+                          <Col key={`${key}-${rowIdx}-${colIdx}`}>
+                            <Card className="h-100">
+                              <Card.Body className="p-2" style={{ minHeight: "120px" }}>
+                                {day && (
+                                  <div>
+                                    <Card.Title as="h6" className="mb-2">
+                                      {day}
+                                    </Card.Title>
+                                    <Card.Text className="small text-muted mb-1">09:00</Card.Text>
+                                    <Card.Text className="small text-muted mb-0">22:00</Card.Text>
+                                  </div>
+                                )}
+                              </Card.Body>
+                            </Card>
+                          </Col>
+                        ))}
+                      </Row>
+                    ))}
+                  </Card.Body>
+                </Card>
               ))}
-            </Row>
-
-            {Array.from({ length: dayCells.length / 7 }).map((_, rowIdx) => (
-              <Row className="g-2 mb-2" key={rowIdx}>
-                {dayCells.slice(rowIdx * 7, rowIdx * 7 + 7).map((day, colIdx) => (
-                  <Col key={`${rowIdx}-${colIdx}`}>
-                    <Card className="h-100">
-                      <Card.Body className="p-2" style={{ minHeight: "120px" }}>
-                        {day && (
-                          <div>
-                            <Card.Title as="h6" className="mb-2">
-                              {day}
-                            </Card.Title>
-                            <Card.Text className="small text-muted mb-1">09:00</Card.Text>
-                            <Card.Text className="small text-muted mb-0">22:00</Card.Text>
-                          </div>
-                        )}
-                      </Card.Body>
-                    </Card>
-                  </Col>
-                ))}
-              </Row>
-            ))}
+            </div>
         </div>
     </div>
   )
