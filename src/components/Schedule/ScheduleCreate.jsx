@@ -1,8 +1,10 @@
+import { useState } from "react"
 import { Button, Row, Form, Col, Card } from "react-bootstrap"
 import MultiSelect from "../MultiSelect"
 
 function ScheduleCreate() {
   const now = new Date()
+  const [calendarScale, setCalendarScale] = useState(1)
   const weekdays = ["Երկուշաբթի", "Երեքշաբթի", "Չորեքշաբթի", "Հինգշաբթի", "Ուրբաթ", "Շաբաթ", "Կիրակի"]
   const months = Array.from({ length: 12 }, (_, index) => {
     const monthDate = new Date(now.getFullYear(), now.getMonth() + index, 1)
@@ -22,6 +24,8 @@ function ScheduleCreate() {
 
     return { monthLabel, dayCells, key: `${monthDate.getFullYear()}-${monthDate.getMonth()}` }
   })
+  const increaseScale = () => setCalendarScale((prev) => Math.min(1.4, Number((prev + 0.1).toFixed(2))))
+  const decreaseScale = () => setCalendarScale((prev) => Math.max(0.8, Number((prev - 0.1).toFixed(2))))
 
   return (
     <div>
@@ -93,22 +97,37 @@ function ScheduleCreate() {
           <p>Աշխատանքային ժամեր</p>
         </div>
         <div className="form-card my-4">
-            <p className="header-name">Օրացույց</p>
+            <div className="d-flex align-items-center justify-content-between mb-2">
+              <p className="header-name mb-0">Օրացույց</p>
+              <div className="d-flex gap-2">
+                <Button variant="outline-secondary" size="sm" onClick={decreaseScale}>
+                  -
+                </Button>
+                <Button variant="outline-secondary" size="sm" onClick={increaseScale}>
+                  +
+                </Button>
+              </div>
+            </div>
             <div className="d-flex gap-3 overflow-auto pb-2" style={{ scrollSnapType: "x mandatory" }}>
               {months.map(({ monthLabel, dayCells, key }) => (
                 <Card
                   key={key}
                   className="flex-shrink-0"
-                  style={{ minWidth: "1100px", scrollSnapAlign: "start" }}
+                  style={{
+                    minWidth: `${1100 * calendarScale}px`,
+                    scrollSnapAlign: "start",
+                    transform: `scale(${calendarScale})`,
+                    transformOrigin: "top left",
+                  }}
                 >
                   <Card.Body>
-                    <h5 className="mb-3">{monthLabel}</h5>
+                    <h5 className="mb-3" style={{ fontSize: `${1.25 * calendarScale}rem` }}>{monthLabel}</h5>
 
                     <Row className="g-2 mb-2">
                       {weekdays.map((weekday) => (
                         <Col key={`${key}-${weekday}`}>
                           <Card bg="info" text="white" className="text-center py-2">
-                            <small>{weekday}</small>
+                            <small style={{ fontSize: `${0.875 * calendarScale}rem` }}>{weekday}</small>
                           </Card>
                         </Col>
                       ))}
@@ -119,14 +138,14 @@ function ScheduleCreate() {
                         {dayCells.slice(rowIdx * 7, rowIdx * 7 + 7).map((day, colIdx) => (
                           <Col key={`${key}-${rowIdx}-${colIdx}`}>
                             <Card className="h-100">
-                              <Card.Body className="p-2" style={{ minHeight: "120px" }}>
+                              <Card.Body className="p-2" style={{ minHeight: `${120 * calendarScale}px` }}>
                                 {day && (
                                   <div>
-                                    <Card.Title as="h6" className="mb-2">
+                                    <Card.Title as="h6" className="mb-2" style={{ fontSize: `${1 * calendarScale}rem` }}>
                                       {day}
                                     </Card.Title>
-                                    <Card.Text className="small text-muted mb-1">09:00</Card.Text>
-                                    <Card.Text className="small text-muted mb-0">22:00</Card.Text>
+                                    <Card.Text className="small text-muted mb-1" style={{ fontSize: `${0.875 * calendarScale}rem` }}>09:00</Card.Text>
+                                    <Card.Text className="small text-muted mb-0" style={{ fontSize: `${0.875 * calendarScale}rem` }}>22:00</Card.Text>
                                   </div>
                                 )}
                               </Card.Body>
