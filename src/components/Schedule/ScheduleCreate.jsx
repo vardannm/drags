@@ -126,7 +126,7 @@ function ScheduleCreate() {
                     <Row className="g-2 mb-2">
                       {weekdays.map((weekday) => (
                         <Col key={`${key}-${weekday}`}>
-                          <Card bg="info" text="white" className="text-center py-2">
+                          <Card bg="cs-blue"  text="white" className="text-center py-2 custom-card">
                             <small style={{ fontSize: `${0.875 * calendarScale}rem` }}>{weekday}</small>
                           </Card>
                         </Col>
@@ -141,12 +141,14 @@ function ScheduleCreate() {
                               <Card.Body className="p-2" style={{ minHeight: `${120 * calendarScale}px` }}>
                                 {day && (
                                   <div>
-                                    <Card.Title as="h6" className="mb-2" style={{ fontSize: `${1 * calendarScale}rem` }}>
-                                      {day}
+                                    <Card.Title as="h6" className="mb-2">
+                                     
+                                      <Col md={12}><Form.Control disabled value={day}/></Col>
                                     </Card.Title>
-                                    <Card.Text className="small text-muted mb-1" style={{ fontSize: `${0.875 * calendarScale}rem` }}>09:00</Card.Text>
-                                    <Card.Text className="small text-muted mb-0" style={{ fontSize: `${0.875 * calendarScale}rem` }}>22:00</Card.Text>
+                                    <Card.Text className="small text-muted mb-1"><Col md={12}><Form.Control disabled placeholder="09:00"/></Col></Card.Text>
+                                    <Card.Text className="small text-muted mb-0"><Col md={12}><Form.Control disabled placeholder="22:00"/></Col></Card.Text>
                                   </div>
+
                                 )}
                               </Card.Body>
                             </Card>
