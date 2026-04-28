@@ -2,16 +2,15 @@ import React, { useMemo, useState } from "react";
 import { Table, Pagination, Form, Col } from "react-bootstrap";
 import { BsGearWide, BsPencil } from "react-icons/bs";
 import { MdOutlineRemoveRedEye } from "react-icons/md";
-import { IoSearchOutline, IoTrashOutline } from "react-icons/io5";
-import { Button, Modal } from "react-bootstrap";
+import { IoTrashOutline } from "react-icons/io5";
+import { Button } from "react-bootstrap";
 import {
   BsChevronLeft,
   BsChevronRight,
   BsChevronDoubleLeft,
   BsChevronDoubleRight,
 } from "react-icons/bs";
-import { HiOutlineDocumentSearch } from "react-icons/hi";
-import { GoPlus } from "react-icons/go";
+
 
 function SecurityCameraSearch() {
   const fakeData = useMemo(
@@ -379,8 +378,8 @@ function SecurityCameraSearch() {
   return (
     <>
       <div className="security">
-         <div className="security-search">
-                  <div className="search-actions">
+         <div className="page-card">
+                  <div className="page-actions">
                    
         
                     <Button variant="outline-cs-blue"> 

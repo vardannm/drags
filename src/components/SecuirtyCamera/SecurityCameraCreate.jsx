@@ -19,8 +19,8 @@ function SecurityCameraCreate() {
   return (
     <div>
       <Form noValidate validated={validated} onSubmit={handleSubmit}>
-        <div className="security-search">
-          <div className="search-actions">
+        <div className="page-card">
+          <div className="page-actions">
             <Button variant="cs-blue" type="submit">
               Ավելացնել
             </Button>
