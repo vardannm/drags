@@ -103,7 +103,10 @@ npm run test:vitest
 
 ### Included test files
 
-- `src/test/App.test.jsx` (Vitest + Testing Library UI test)
+- `src/test/App.test.jsx` (login screen render test)
+- `src/test/PageName.test.jsx` (page title rendering test)
+- `src/test/TopNav.test.jsx` (top navigation behavior test)
+- `src/test/Sidebar.test.jsx` (sidebar desktop switch + badge test)
 - `src/test/setupTests.js` (jest-dom setup for Vitest)
 - `tests/smoke.test.js` (Node.js fallback smoke test)
 
