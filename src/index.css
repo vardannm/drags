@@ -763,7 +763,6 @@ font-size: 20px;
 
 .table-button {
   border: none;
-  padding: ;
   background-color: white;
   color: #087990;
   font-size: 1rem;
@@ -1443,4 +1442,7 @@ font-size: 20px;
   border-top-right-radius: 5px;
   font-weight: 600;
   text-align: center;
+}
+.custom-card{
+  border-radius: 0px;
 }
