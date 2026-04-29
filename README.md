@@ -86,20 +86,30 @@ The frontend expects backend endpoints under `/api/*`.
 
 This project now includes starter test files prepared for Vitest usage in a future pipeline rollout.
 
-### Planned test command
+### Test commands
 
 ```bash
 npm run test
 ```
 
+- Runs Vitest when it is available.
+- Falls back to Node.js smoke tests when Vitest is not installed in restricted environments.
+
+```bash
+npm run test:vitest
+```
+
+- Forces Vitest execution (for CI/pipeline environments where dependencies are installed).
+
+### Included test files
+
+- `src/test/App.test.jsx` (Vitest + Testing Library UI test)
+- `src/test/setupTests.js` (jest-dom setup for Vitest)
+- `tests/smoke.test.js` (Node.js fallback smoke test)
+
 ### Notes
 
-- If your environment blocks npm registry access, install test packages later in CI or in an unrestricted environment.
-- Suggested packages:
-  - `vitest`
-  - `@testing-library/react`
-  - `@testing-library/jest-dom`
-  - `jsdom`
+- If your environment blocks npm registry access, use `npm run test` fallback locally and run `npm run test:vitest` in CI or an unrestricted environment.
 
 ## Suggested CI pipeline steps
 
